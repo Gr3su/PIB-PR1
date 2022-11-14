@@ -2,14 +2,19 @@
 /**
  * 
  * @author Tim Mueller / Yannick Gross
- * @version 11.11.2022 / 17:28
+ * @version 12.11.2022 / 23:14
  */
 public class Artikel{
+   //Fehlermeldungen
+   private static final String ARTIKELNUMMER = "Die Artikelnummer muss vierstellig und positiv sein";
+   private static final String ARTIKELART = "Die Artikelart muss eine Zeichenkette sein";
+   private static final String BESTAND = "Der Bestand darf nicht negativ sein";
+   private static final String BUCHUNG = "Die Buchungsmenge darf nicht negativ sein";
+   
    //Attribute für die Klasse Artikel
    private int artikelNr;
    private String art;
    private int bestand;
-
    /**
     * Konstruktor für die Klasse Artikel mit allen Attributen.
     * 
@@ -24,19 +29,19 @@ public class Artikel{
    public Artikel(int artikelNr, String art, int bestand) {
        
        if(artikelNr < 0){
-           throw new IllegalArgumentException("Die Artikelnummer darf nicht negativ sein");
+           throw new IllegalArgumentException(ARTIKELNUMMER);
        }
        
-       if(String.valueOf(artikelNr).length() != 4){
-           throw new IllegalArgumentException("Die Artikelnummer muss vierstellig sein");
+       if(artikelNr > 9999){
+           throw new IllegalArgumentException(ARTIKELNUMMER);
         }
        
-       if(art.isBlank()){
-           throw new IllegalArgumentException("Die Artikelart muss eine Zeichenkette sein");
+       if(art.isBlank() || art == null){
+           throw new IllegalArgumentException(ARTIKELART);
        }
         
        if(bestand < 0){
-           throw new IllegalArgumentException("Der bestand darf nicht auf einem Wert unter 0 liegen");
+           throw new IllegalArgumentException(BESTAND);
        }
        
        this.artikelNr = artikelNr;
@@ -69,7 +74,7 @@ public class Artikel{
     */
    public void bucheZugang(int menge){
        if(menge < 0){
-           throw new IllegalArgumentException("Die Zubuchung darf keine negative Zahl sein");
+           throw new IllegalArgumentException(BUCHUNG);
        }   
        bestand += menge; 
    }
@@ -84,11 +89,11 @@ public class Artikel{
     */
    public void bucheAbgang(int menge){
        if(menge < 0){
-           throw new IllegalArgumentException("Die Abbuchung darf keine negative Zahl sein");
+           throw new IllegalArgumentException(BUCHUNG);
        }
        
        if(bestand - menge < 0){
-           throw new IllegalArgumentException("Der bestand darf nach der Abbuchen nicht kleiner sein als 0"); 
+           throw new IllegalArgumentException(BESTAND); 
        }
        bestand -= menge;
    }
@@ -114,7 +119,7 @@ public class Artikel{
    /**
     * Gibt den Bestand des Artikels zurueck.
     * 
-    * @return Bestan des Artikels.
+    * @return Bestand des Artikels.
     */
    public int getBestand(){
        return bestand;
@@ -129,18 +134,51 @@ public class Artikel{
     */
    public void setBestand(int bestand){
        if(bestand < 0){
-           throw new IllegalArgumentException("Der Bestand darf nicht unter den Wert 0 liegen");
+           throw new IllegalArgumentException(BESTAND);
        }
        this.bestand = bestand;
    }
-
+   
+   /**
+    * Überschreibt die Art des Artikels mit dem übergebenem Wert.
+    * 
+    * @param art Neue Art des Artikels.
+    * 
+    * @throws IllegalArgumentException Wenn art keine Zeichenkette.
+    */
+   public void setArt(String art){
+       if(art.trim().isEmpty() == true || art == null){
+           throw new IllegalArgumentException(ARTIKELART); 
+       }
+       
+       this.art = art;     
+   }
+   
+   /**
+    * Damit Artikelnummern kleiner als 1000 als int gespeichert werden können
+    * und trotzdem als vierstellige Zahl ausgegeben werden, bereitet diese Methode
+    * einen String auf. Artikelnummern mit weniger als vier Stellen, werden dann mit
+    * fuehrenden 0 aufgefuellt.
+    * 
+    * @return Aufbereitete Artikelnummer.
+    */
+   public String artikelNrAusgabe(){
+      String artikelNrAusgabe = String.valueOf(artikelNr);
+      
+      while(artikelNrAusgabe.length() < 4) {
+          artikelNrAusgabe = ("0" + artikelNrAusgabe);  
+      } 
+      
+      return artikelNrAusgabe; 
+    }
+   
    /**
     * Bereitet eine Zeichenkette auf, die alle Attribute des Artikels beinhaltet.
     * 
     * @return Zeichenkette mit den Objekt-Attributen, getrennt durch Semikolon.
     */
    public String toString(){
-       return("Artikelnummer: " + artikelNr + "; Artikelart " + art + "; Bestand "
+       return("Artikelnummer: " + artikelNrAusgabe() + "; Artikelart " + art + "; Bestand "
        + bestand);
    }
    }

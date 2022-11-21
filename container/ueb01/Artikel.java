@@ -143,4 +143,5 @@ public class Artikel{
        return("Artikelnummer: " + artikelNr + "; Artikelart " + art + "; Bestand "
        + bestand);
    }
+   
    }

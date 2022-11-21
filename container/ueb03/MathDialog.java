@@ -6,9 +6,12 @@ import java.util.Scanner;
  * @version 20.11.2022 / 21:00Uhr
  */
 public class MathDialog{
+    private static final String ERROR_FALSCHE_EINGABE = "Falsche Eingabe, bitte erneut versuchen\n";
+    private static final String ERROR_OPTION_NICHT_GEFUNDEN = "Option wurde nicht gefunden\n";
+    
     private boolean killProgram = false;
     Scanner scanner = new Scanner(System.in);
-    private short option = -1;
+    private byte option = -1;
     
     /**
      * Dialog der von main Methode gestartet wird.
@@ -38,14 +41,14 @@ public class MathDialog{
      * 
      * @return Eingabe des Users.
      */
-    public short optionAuswahl(){
+    public byte optionAuswahl(){
         String optionAusgabe = "Folgende Funktionen sind auswaehlbar:\n" +
                                 "1 : Teilersumme berechnen\n" +
                                 "2 : Prüfziffer einer ISBN berechnen\n" +
                                 "3 : Nullstellen von quad. Gleichung mit pq-Formel berechnen\n" +
                                 "4 : Dialog stoppen";
                                 
-        return leseShort(optionAusgabe);
+        return leseByte(optionAusgabe);
     }
     
     /**
@@ -84,7 +87,7 @@ public class MathDialog{
                 break;
             
             default:
-                throw new IllegalArgumentException("Falsche Eingabe, bitte erneut versuchen.\n");
+                throw new IllegalArgumentException(ERROR_OPTION_NICHT_GEFUNDEN);
         }
     }
     
@@ -95,14 +98,14 @@ public class MathDialog{
      * 
      * @return Short die weiter verwendet werden kann.
      */
-    public short leseShort(String prompt){
+    public byte leseByte(String prompt){
         System.out.println(prompt);
-        while(!scanner.hasNextShort()){
-            System.out.println("Falsche Eingabe, erneut versuchen:");
+        while(!scanner.hasNextByte()){
+            System.out.println(ERROR_FALSCHE_EINGABE);
             scanner.next();
         }
         
-        return scanner.nextShort();
+        return scanner.nextByte();
     }
     
     /**
@@ -115,7 +118,7 @@ public class MathDialog{
     public long leseLong(String prompt){
         System.out.println(prompt);
         while(!scanner.hasNextLong()){
-            System.out.println("Falsche Eingabe, erneut versuchen:");
+            System.out.println(ERROR_FALSCHE_EINGABE);
             scanner.next();
         }
         
@@ -132,7 +135,7 @@ public class MathDialog{
     public double leseDouble(String prompt){
         System.out.println(prompt);
         while(!scanner.hasNextDouble()){
-            System.out.println("Falsche Eingabe, erneut versuchen:");
+            System.out.println(ERROR_FALSCHE_EINGABE);
             scanner.next();
         }
         

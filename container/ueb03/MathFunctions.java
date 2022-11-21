@@ -7,9 +7,9 @@ import java.lang.Math;
  * @version 20.11.2022 / 21:00Uhr
  */
 public class MathFunctions{
-    public static final String ERROR_KEINE_ISBN = "Eingegebene Zahl keine ISBN";
-    public static final String ERROR_GROESSER_NULL = "Eingegebene Zahl muss groesser 0 sein";
-    public static final String ERROR_NICHT_NEGATIV_SEIN = "Eingegebene Zahl darf nicht negativ sein";
+    public static final String ERROR_KEINE_ISBN = "Eingegebene Zahl keine ISBN\n";
+    public static final String ERROR_GROESSER_NULL = "Eingegebene Zahl muss groesser 0 sein\n";
+    public static final String ERROR_NICHT_NEGATIV_SEIN = "Eingegebene Zahl darf nicht negativ sein\n";
     
     /**
      * Findet Teiler von Zahl heraus und berechnet deren Summe.
@@ -57,7 +57,7 @@ public class MathFunctions{
         }
         
         for(int i = 9; i > 0; i--){
-            pruefziffer = pruefziffer + (isbn %  10) * i;
+            pruefziffer += (isbn %  10) * i;
             isbn /= 10;
         }
         pruefziffer %= 11;
@@ -84,15 +84,14 @@ public class MathFunctions{
         double diskriminante = Math.pow((p/2),2) - q;
         double ersteNullstelle = -(p/2) + Math.sqrt(diskriminante);
         double zweiteNullstelle = -(p/2) - Math.sqrt(diskriminante);
-        double error = Math.abs(ersteNullstelle * 0.0000001);
+        double error = 0.0000001;
         
         if(diskriminante == 0.0){
             return "Doppelte Nullstelle: " + ersteNullstelle;
         }
         
-        else if(ersteNullstelle > zweiteNullstelle && ersteNullstelle - error <= zweiteNullstelle || 
-                ersteNullstelle <= zweiteNullstelle && ersteNullstelle + error >= zweiteNullstelle){
-            return "Moegliche ungenaue Darstellung, Doppelte Nullstelle: " + zweiteNullstelle;
+        else if(diskriminante - error <= 0 && diskriminante + error > 0){
+            return "Moegliche ungenaue Darstellung, Doppelte Nullstelle: " + ersteNullstelle;
         }
         
         else if(diskriminante > 0.0){

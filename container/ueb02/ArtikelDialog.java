@@ -1,3 +1,5 @@
+package ueb02
+
 import java.util.Scanner;
 
 /**

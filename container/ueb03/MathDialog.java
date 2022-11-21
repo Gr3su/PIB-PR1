@@ -1,3 +1,5 @@
+package ueb03
+
 import java.util.Scanner;
 /**
  * Beschreiben Sie hier die Klasse MathDialog.

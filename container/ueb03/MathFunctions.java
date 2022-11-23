@@ -1,4 +1,4 @@
-package ueb03
+package container.ueb03;
 
 import java.lang.Math;
 
@@ -12,6 +12,10 @@ public class MathFunctions{
     public static final String ERROR_KEINE_ISBN = "Eingegebene Zahl keine ISBN\n";
     public static final String ERROR_GROESSER_NULL = "Eingegebene Zahl muss groesser 0 sein\n";
     public static final String ERROR_NICHT_NEGATIV_SEIN = "Eingegebene Zahl darf nicht negativ sein\n";
+    private static final double ERROR = 0.00001;
+    
+    private MathFunctions(){
+    }
     
     /**
      * Findet Teiler von Zahl heraus und berechnet deren Summe.
@@ -23,21 +27,23 @@ public class MathFunctions{
      * @throws IllegalArgumentException Wenn <code>Zahl</code> negativ ist.
      */
     public static long berechneTeilersumme(long zahl){
-        long teilerSum = zahl;
+        long teilerSumme = 0;
         
         if(zahl <= 0){
             throw new IllegalArgumentException(ERROR_GROESSER_NULL);
         }
-        
-        for(int i = 1; i <= zahl / 2; i++){
+        for(long i = 1; i * i <= zahl; i++){
+            if(i * i == zahl){
+                teilerSumme += i;
+                break;
+            }
             if(zahl % i == 0){
-                teilerSum += i;
+                teilerSumme += i + zahl / i;
             }
         }
-        
-        return teilerSum;
+        return teilerSumme;
     }
-    
+
     /**
      * Berechnet Pruefziffer fuer ISBN.
      * 
@@ -83,23 +89,19 @@ public class MathFunctions{
      * @return Art der Nullstellen und die dazugehoerigen Nullstellen.
      */
     public static String berechneNullstellen(double p, double q){
-        double diskriminante = Math.pow((p/2),2) - q;
+        double diskriminante = (p/2) * (p/2) - q;
         double ersteNullstelle = -(p/2) + Math.sqrt(diskriminante);
         double zweiteNullstelle = -(p/2) - Math.sqrt(diskriminante);
-        double error = 0.0000001;
         
-        if(diskriminante == 0.0){
-            return "Doppelte Nullstelle: " + ersteNullstelle;
-        }
         
-        else if(diskriminante - error <= 0 && diskriminante + error > 0){
-            return "Moegliche ungenaue Darstellung, Doppelte Nullstelle: " + ersteNullstelle;
-        }
-        
-        else if(diskriminante > 0.0){
+        if(diskriminante >= ERROR){
             return "Zwei Nullstellen: " + ersteNullstelle + " | " + zweiteNullstelle;
         }
         
-        return "Komplexe Nullstellen";
+        else if(diskriminante <= ERROR){
+            return "Komplexe Nullstellen";
+        }
+        
+        return "Doppelte Nullstelle: " + ersteNullstelle;
     }
 }

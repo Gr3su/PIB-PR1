@@ -54,7 +54,10 @@ public class ArtikelDialog{
                                     "6 - Gebe in einem String alle Attribute zurueck\n" +
                                     "7 - Beendet den Dialog\n" +
                                     "Eingabe: ");
-                        
+        if(input < 1 || input > 7){
+            throw new IllegalArgumentException(FALSCHE_EINGABE);
+        }
+                                    
         if(artikel == null && (input != 1 || input != 7)){
             System.out.println("Artikel wurde noch nicht initialisiert. Objekt initialisierung wird gestartet.");
             input = 1;
@@ -66,7 +69,7 @@ public class ArtikelDialog{
                     input = leseByte("Artikel existiert bereits, Objekt wirklich Ueberschreiben? (1: Ja / 0: Nein)");
                     
                     if(input != 1){
-                        System.out.println("Artikel wird nicht überschrieben.");
+                        System.out.println("Artikel wird nicht Ueberschrieben.");
                         break;
                     }
                 }
@@ -111,20 +114,22 @@ public class ArtikelDialog{
      * @throws IllegalArgumentException Wenn etwas anderes als Ja oder Nein eingegeben wurde.
      */
     public void erstelleArtikel(){
-        String konstruktorWahl = leseString("Soll der komplette Konstruktor aufgerufen werden? (Ja/Nein)\nEingabe:");
-        if(konstruktorWahl.trim().isEmpty() == true || (!konstruktorWahl.equalsIgnoreCase("ja") && !konstruktorWahl.equalsIgnoreCase("nein"))){
+        byte konstruktorWahl = leseByte("Soll der komplette Konstruktor aufgerufen werden? (1:Ja / 0:Nein)\nEingabe:");
+        
+        if(konstruktorWahl < 0 || konstruktorWahl > 1){
             throw new IllegalArgumentException(FALSCHE_EINGABE);
         }
         
         int artikelNr = leseInt("Die Artikelnummer: ");
-    
         String art = leseString("Die Artikelart: ");
-        if(konstruktorWahl.trim().equalsIgnoreCase("ja")){
+        
+        if(konstruktorWahl == 1){
             int bestand = leseInt("Der Bestand: ");
             
             artikel = new Artikel(artikelNr, art, bestand);
             return;
         }
+        
         artikel = new Artikel(artikelNr, art);
     }
     
@@ -155,6 +160,7 @@ public class ArtikelDialog{
             System.out.println("Falsche Eingabe\n" + prompt);
         }
         byte tmp = scanner.nextByte();
+        scanner.nextLine();
         
         return tmp;
     }
@@ -175,6 +181,7 @@ public class ArtikelDialog{
             System.out.println("Falsche Eingabe\n" + prompt);
         }
         int tmp = scanner.nextInt();
+        scanner.nextLine();
         
         return tmp;
     }

@@ -1,5 +1,3 @@
-package ueb03
-
 import java.lang.Math;
 
 /**
@@ -12,6 +10,9 @@ public class MathFunctions{
     public static final String ERROR_KEINE_ISBN = "Eingegebene Zahl keine ISBN\n";
     public static final String ERROR_GROESSER_NULL = "Eingegebene Zahl muss groesser 0 sein\n";
     public static final String ERROR_NICHT_NEGATIV_SEIN = "Eingegebene Zahl darf nicht negativ sein\n";
+    
+    private MathFunctions()
+    {}
     
     /**
      * Findet Teiler von Zahl heraus und berechnet deren Summe.

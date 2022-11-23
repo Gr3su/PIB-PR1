@@ -1,5 +1,3 @@
-package ueb03
-
 import java.util.Scanner;
 /**
  * Beschreiben Sie hier die Klasse MathDialog.
@@ -11,9 +9,16 @@ public class MathDialog{
     private static final String ERROR_FALSCHE_EINGABE = "Falsche Eingabe, bitte erneut versuchen\n";
     private static final String ERROR_OPTION_NICHT_GEFUNDEN = "Option wurde nicht gefunden\n";
     
-    private boolean killProgram = false;
-    Scanner scanner = new Scanner(System.in);
-    private byte option = -1;
+    private boolean killProgram;
+    private Scanner scanner;
+    private byte option;
+    
+    
+    public MathDialog(){
+       killProgram = false;
+       scanner = new Scanner(System.in);
+       option = -1;
+    }
     
     /**
      * Dialog der von main Methode gestartet wird.

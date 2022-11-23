@@ -14,13 +14,6 @@ public class ArtikelDialog{
     private static Scanner scanner = new Scanner(System.in);
     private static Artikel artikel = null;
     private static boolean killProgram = false;
-    /**
-     * Main Methode, durch die das Programm gestartet wird.
-     * Erstellt Objekt der eigenen Klasse, um nich statische Methode start() aufzurufen.
-     */
-    public static void main(String [] args){
-        new ArtikelDialog().start();
-    }
     
     /**
      * Methode in der das Hauptprogramm laeuft.
@@ -124,7 +117,7 @@ public class ArtikelDialog{
             throw new IllegalArgumentException(FALSCHE_EINGABE);
         }
         
-        int artikelNr = readInt("(Nummern kleiner als 1000 werden mit fuehrenden 0 aufgefuellt!)\nDie Artikelnummer: ");
+        int artikelNr = readInt("Die Artikelnummer: ");
     
         String art = readString("Die Artikelart: ");
         if(konstruktorWahl.trim().equalsIgnoreCase("ja")){
@@ -167,5 +160,12 @@ public class ArtikelDialog{
         scanner.nextLine();
         return tmp;
     }
+      /**
+     * Main Methode, durch die das Programm gestartet wird.
+     * Erstellt Objekt der eigenen Klasse, um nich statische Methode start() aufzurufen.
+     */
+    public static void main(String [] args){
+        new ArtikelDialog().start();
+    }
+    
 }
-

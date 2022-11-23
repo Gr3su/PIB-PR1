@@ -10,6 +10,8 @@ public class Artikel{
    private static final String ARTIKELART = "Die Artikelart muss eine Zeichenkette sein";
    private static final String BESTAND = "Der Bestand darf nicht negativ sein";
    private static final String BUCHUNG = "Die Buchungsmenge darf nicht negativ sein";
+   private static final int ARTIKELNR_OBERGRENZE = 9999;
+   private static final int ARTIKELNR_UNTERGRENZE = 999;
    
    //Attribute für die Klasse Artikel
    private int artikelNr;
@@ -32,7 +34,7 @@ public class Artikel{
            throw new IllegalArgumentException(ARTIKELNUMMER);
        }
        
-       if(artikelNr > 9999){
+       if(artikelNr > ARTIKELNR_OBERGRENZE || artikelNr <= ARTIKELNR_UNTERGRENZE){
            throw new IllegalArgumentException(ARTIKELNUMMER);
         }
        
@@ -45,8 +47,8 @@ public class Artikel{
        }
        
        this.artikelNr = artikelNr;
-       this.art = art;
-       this.bestand = bestand;
+       setArt(art);
+       setBestand(bestand);
    }
    
    /**
@@ -154,23 +156,6 @@ public class Artikel{
        this.art = art;     
    }
    
-   /**
-    * Damit Artikelnummern kleiner als 1000 als int gespeichert werden können
-    * und trotzdem als vierstellige Zahl ausgegeben werden, bereitet diese Methode
-    * einen String auf. Artikelnummern mit weniger als vier Stellen, werden dann mit
-    * fuehrenden 0 aufgefuellt.
-    * 
-    * @return Aufbereitete Artikelnummer.
-    */
-   public String artikelNrAusgabe(){
-      String artikelNrAusgabe = String.valueOf(artikelNr);
-      
-      while(artikelNrAusgabe.length() < 4) {
-          artikelNrAusgabe = ("0" + artikelNrAusgabe);  
-      } 
-      
-      return artikelNrAusgabe; 
-    }
    
    /**
     * Bereitet eine Zeichenkette auf, die alle Attribute des Artikels beinhaltet.
@@ -178,7 +163,7 @@ public class Artikel{
     * @return Zeichenkette mit den Objekt-Attributen, getrennt durch Semikolon.
     */
    public String toString(){
-       return("Artikelnummer: " + artikelNrAusgabe() + "; Artikelart " + art + "; Bestand "
+       return("Artikelnummer: " + artikelNr + "; Artikelart " + art + "; Bestand "
        + bestand);
    }
    }

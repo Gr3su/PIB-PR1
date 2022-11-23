@@ -117,7 +117,7 @@ public class ArtikelDialog{
             throw new IllegalArgumentException(FALSCHE_EINGABE);
         }
         
-        int artikelNr = readInt("(Nummern kleiner als 1000 werden mit fuehrenden 0 aufgefuellt!)\nDie Artikelnummer: ");
+        int artikelNr = readInt("Die Artikelnummer: ");
     
         String art = readString("Die Artikelart: ");
         if(konstruktorWahl.trim().equalsIgnoreCase("ja")){
@@ -169,4 +169,3 @@ public class ArtikelDialog{
     }
     
 }
-

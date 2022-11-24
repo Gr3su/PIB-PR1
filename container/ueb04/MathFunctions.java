@@ -105,6 +105,33 @@ public class MathFunctions{
         return "Doppelte Nullstelle: " + ersteNullstelle;
     }
     
+    public static boolean istSummeVonPotenzen(long zahl){
+        for(int a = 1; a <= Math.pow(zahl,1.0/4.0); a++){
+            long aHochVier = a * a * a * a;
+            for(int b = 1; b <= Math.cbrt(zahl); b++){
+                long bHochDrei = b * b * b;
+                for(int c = 1; c <= Math.sqrt(zahl); c++){
+                    long cHochZwei = c * c;
+                    if(aHochVier + bHochDrei + cHochZwei == zahl){
+                        return true;
+                    }
+                }
+                
+                
+            }
+        }
+        
+        return false;
+    }
+    
+    /**
+     * Euklidischer Algorithmus um ggT zu bestimmen.
+     * 
+     * @param zahl1 Erste Zahl von der gemeinsamer Teiler bestimmt werden soll.
+     * @param zahl2 Zweite Zahl von der gemeinsamer Teiler bestimmt werden soll.
+     * 
+     * @throws IllegalArgumentException Wenn eingegebene Zahlen negativ oder gleich 0 sind.
+     */
     public static int berechneGgt(int zahl1, int zahl2){
         if(zahl1 <= 0 || zahl2 <= 0){
             throw new IllegalArgumentException(ERROR_GROESSER_NULL);
@@ -116,6 +143,18 @@ public class MathFunctions{
             zahl1 = tmp;
         }
         
+        int ggt = 0;
+        while(true){
+            if(zahl1 % zahl2 == 0){
+                break;
+            }
+            
+            ggt = zahl1 % zahl2;
+            zahl1 = zahl2;
+            zahl2 = ggt;
+        }
         
+        return ggt;
     }
+    
 }

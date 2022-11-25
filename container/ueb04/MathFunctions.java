@@ -105,18 +105,28 @@ public class MathFunctions{
         return "Doppelte Nullstelle: " + ersteNullstelle;
     }
     
+    /**
+     * Ueberprueft ob Zahl als a^4+b^3+c^2 dargestellt werden kann.
+     * 
+     * @param zahl Zahl fuer die geprueft werden soll
+     */
     public static boolean istSummeVonPotenzen(long zahl){
+        if(zahl < 1){
+            throw new IllegalArgumentException(ERROR_GROESSER_NULL);
+        }
+        if(zahl < 3){
+            return false;
+        }
+        
         for(int a = 1; a <= Math.pow(zahl,1.0/4.0); a++){
-            long aHochVier = a * a * a * a;
+            double aHochVier = a * a * a * a;
             for(int b = 1; b <= Math.cbrt(zahl); b++){
-                long bHochDrei = b * b * b;
-                for(int c = 1; c <= Math.sqrt(zahl); c++){
-                    long cHochZwei = c * c;
-                    if(aHochVier + bHochDrei + cHochZwei == zahl){
-                        return true;
-                    }
-                }
+                double bHochDrei = b * b * b;
+                double c = zahl - aHochVier - bHochDrei;
                 
+                if(Math.sqrt(c) % 1 == 0){
+                    return true;
+                }
                 
             }
         }
@@ -157,4 +167,17 @@ public class MathFunctions{
         return ggt;
     }
     
+    public static double berechneReihensumme(int anzahl, double x){
+        double zaehler = x-1;
+        double nenner = x;
+        double summe = 0;
+        
+        for(int i = 1; i <= anzahl; i++){
+            summe += zaehler / nenner;
+            zaehler *= zaehler;
+            nenner *= nenner * i;
+        }
+        
+        return summe;
+    }
 }

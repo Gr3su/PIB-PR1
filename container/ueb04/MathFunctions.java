@@ -6,7 +6,7 @@ import java.lang.Math;
  * Werkzeugmethoden fuer mathematische Operationen
  * 
  * @author Yannick Gross / Tim Mueller
- * @version 20.11.2022 / 21:00Uhr
+ * @version 26.11.2022 / 14:00Uhr
  */
 public class MathFunctions{
     public static final String ERROR_KEINE_ISBN = "Eingegebene Zahl keine ISBN\n";
@@ -108,7 +108,11 @@ public class MathFunctions{
     /**
      * Ueberprueft ob Zahl als a^4+b^3+c^2 dargestellt werden kann.
      * 
-     * @param zahl Zahl fuer die geprueft werden soll
+     * @param zahl Zahl fuer die geprueft werden soll.
+     *
+     * @return Wahrheitswert, ob Zahl mit gegebener Formel dargestellt werden kann.
+     *
+     * @throws IllegalArgumentException Wenn eingegebene <code>kleiner</code> 1 ist.
      */
     public static boolean istSummeVonPotenzen(long zahl){
         if(zahl < 1){
@@ -135,12 +139,14 @@ public class MathFunctions{
     }
     
     /**
-     * Euklidischer Algorithmus um ggT zu bestimmen.
+     * Berechnet mit hilfe des Euklidischen Algorithmus den groessten gemeinsamen Teiler
+     * zweier Zahlen.
      * 
-     * @param zahl1 Erste Zahl von der gemeinsamer Teiler bestimmt werden soll.
-     * @param zahl2 Zweite Zahl von der gemeinsamer Teiler bestimmt werden soll.
+     * @param zahl1 Die erste Zahl die man zur pruefung eines gemeinsamen Teilers eingibt.
+     * @param zahl2 Die zweite Zahl die man zur pruefung eines gemeinsamen Teilers eingibt.      
+     * @return Den groessten gemeinsamen Teiler aus zahl1 und zahl2.
      * 
-     * @throws IllegalArgumentException Wenn eingegebene Zahlen negativ oder gleich 0 sind.
+     * @throws IllegalArgumentException Wenn <code>Zahl1</code> oder <code>Zahl2</code> kleiner 1 ist.
      */
     public static int berechneGgt(int zahl1, int zahl2){
         if(zahl1 <= 0 || zahl2 <= 0){
@@ -167,19 +173,65 @@ public class MathFunctions{
         return ggt;
     }
     
+    /**
+     * Berechnet die Fakultaet einer Zahl.
+     * 
+     * @param zahl Die einzugebende Zahl von der die Fakultaet bestimmt wird.   
+     * @return Die Fakultaet der eingegebenen Zahl.
+     * 
+     * @throws IllegalArgumentException Wenn <code>zahl</code> negativ ist.
+     */
+     
+    public static long berechneFakultaet(int zahl){
+        if(zahl < 0){
+            throw new IllegalArgumentException(ERROR_NICHT_NEGATIV_SEIN);
+        }
+        long fakultaet = 1;
+        for(int i = 0; i < zahl; i++){
+            fakultaet *= (i + 1);
+        }
+        return fakultaet;
+    }
+    
+    /**
+     * Berechnet die Reihensumme eines Wertes x und einer ganzen Zahl anzahl (n).
+     * 
+     * @param anzahl Eine ganze Zahl fuer die anzahl der Summanden der Reihe.   
+     * @param x Ein Wert x fuer die Berechnung der Reihensumme.
+     * @return Die Reihensumme aus dem Wert x und der ganzen Zahl anzahl (n).
+     * 
+     * @throws IllegalArgumentException Wenn <code>anzahl</code> kleiner 1 ist.
+     */
+    
     public static double berechneReihensumme(int anzahl, double x){
+        if(anzahl <= 0){
+            throw new IllegalArgumentException(ERROR_GROESSER_NULL);
+        }
+        double reihenSumme = 0;
+        for(int i = 1; i <= anzahl; i++){ 
+            reihenSumme += Math.pow((x - 1),i) / (i * Math.pow(x,i));  
+        }
+        return reihenSumme;
+    }
+
+    /**
+     * Berechnet die Reihensumme eines Wertes x und einer ganzen Zahl anzahl (n) REKURSIV.
+     * 
+     * @param anzahl Eine ganze Zahl fuer die anzahl der Summanden der Reihe.   
+     * @param x Ein Wert x fuer die Berechnung der Reihensumme.
+     * @return Die Reihensumme aus dem Wert x und der ganzen Zahl anzahl (n).
+     * 
+     * @throws IllegalArgumentException Wenn <code>anzahl</code> kleiner 1 ist.
+     */
+    public static double berechneReihensummeRekursiv(int anzahl, double x){
+        if(anzahl <= 0){
+          throw new IllegalArgumentException(ERROR_GROESSER_NULL);
+        }
+    
         if(anzahl == 1){
             return (x-1)/x;
         }
         
         return Math.pow(x-1,anzahl)/(anzahl * Math.pow(x,anzahl)) + berechneReihensumme(anzahl - 1, x);
-    }
-    
-    public static double b(int a, double x){
-        double rS=0;
-        for(int i=1; i <= a; i++){
-            rS += Math.pow((x-1),i) / (i * Math.pow(x,i));
-        }
-        return rS;
-    }
+    }  
 }

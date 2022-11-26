@@ -97,8 +97,11 @@ public class MathDialog{
                 break;
                 
             case 4:
-                long zahlP = leseLong("zu Pruefende Ziffer: ");
+                long zahlP = leseLong("zu Pruefende Zahl: ");
+                long zahlP = leseLong("Zu Pruefende Ziffer: ");
+                
                 boolean istSummeP = MathFunctions.istSummeVonPotenzen(zahlP);
+                
                 if(istSummeP == true){
                   System.out.println(zahlP + " kann als a^4+b^3+c^2 dargestellt werden.");
                 }

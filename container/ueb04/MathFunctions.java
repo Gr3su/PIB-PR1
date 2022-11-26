@@ -168,16 +168,18 @@ public class MathFunctions{
     }
     
     public static double berechneReihensumme(int anzahl, double x){
-        double zaehler = x-1;
-        double nenner = x;
-        double summe = 0;
-        
-        for(int i = 1; i <= anzahl; i++){
-            summe += zaehler / nenner;
-            zaehler *= zaehler;
-            nenner *= nenner * i;
+        if(anzahl == 1){
+            return (x-1)/x;
         }
         
-        return summe;
+        return Math.pow(x-1,anzahl)/(anzahl * Math.pow(x,anzahl)) + berechneReihensumme(anzahl - 1, x);
+    }
+    
+    public static double b(int a, double x){
+        double rS=0;
+        for(int i=1; i <= a; i++){
+            rS += Math.pow((x-1),i) / (i * Math.pow(x,i));
+        }
+        return rS;
     }
 }

@@ -98,7 +98,6 @@ public class MathDialog{
                 
             case 4:
                 long zahlP = leseLong("zu Pruefende Zahl: ");
-                long zahlP = leseLong("Zu Pruefende Ziffer: ");
                 
                 boolean istSummeP = MathFunctions.istSummeVonPotenzen(zahlP);
                 

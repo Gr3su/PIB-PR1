@@ -24,7 +24,7 @@ public class MathDialog{
     
     /**
      * Dialog der von main Methode gestartet wird.
-     * Führt den Dialog und faengt die Fehler ab.
+     * Fuehrt den Dialog und faengt die Fehler ab.
      */
     public void start(){
         
@@ -124,7 +124,7 @@ public class MathDialog{
                 break;
                 
             case 7:
-                int anzahl = leseInt("Die Anzahl der Durchlaeufe für die Reihe: ");
+                int anzahl = leseInt("Die Anzahl der Durchlaeufe fuer die Reihe: ");
                 double x = leseDouble("Der Wert x der Reihensumme: ");
                 double reihensumme = MathFunctions.berechneReihensumme(anzahl,x);
                 System.out.println( reihensumme + " ist die Summe");
@@ -132,7 +132,7 @@ public class MathDialog{
                 break;
                 
             case 8:
-                int anzahlR = leseInt("Die Anzahl der Durchlaeufe für die Reihe: ");
+                int anzahlR = leseInt("Die Anzahl der Durchlaeufe fuer die Reihe: ");
                 double xR = leseDouble("Der Wert x der Reihensumme: ");
                 double reihensummeR = MathFunctions.berechneReihensummeRekursiv(anzahlR, xR);
                 System.out.println( reihensummeR + " ist die Summe");

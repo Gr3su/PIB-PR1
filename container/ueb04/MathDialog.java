@@ -24,7 +24,7 @@ public class MathDialog{
     
     /**
      * Dialog der von main Methode gestartet wird.
-     * Führt den Dialog und faengt die Fehler ab.
+     * Fuehrt den Dialog und faengt die Fehler ab.
      */
     public void start(){
         
@@ -53,7 +53,7 @@ public class MathDialog{
     public byte optionAuswahl(){
         String optionAusgabe = "Folgende Funktionen sind auswaehlbar:\n" +
                                 "1 : Teilersumme berechnen\n" +
-                                "2 : Prüfziffer einer ISBN berechnen\n" +
+                                "2 : Pruefziffer einer ISBN berechnen\n" +
                                 "3 : Nullstellen von quad. Gleichung mit pq-Formel berechnen\n" +
                                 "4 : Summe von Potenzen berechnen\n" +
                                 "5 : Den gemeinsamen Teiler zweier Zahlen berechnen\n" +
@@ -97,7 +97,7 @@ public class MathDialog{
                 break;
                 
             case 4:
-                long zahlP = leseLong("zu Prfende Zahl: ");
+                long zahlP = leseLong("zu Pruefende Zahl: ");
                 boolean istSummeP = MathFunctions.istSummeVonPotenzen(zahlP);
                 if(istSummeP == true){
                   System.out.println(zahlP + " kann als a^4+b^3+c^2 dargestellt werden.");
@@ -124,7 +124,7 @@ public class MathDialog{
                 break;
                 
             case 7:
-                int anzahl = leseInt("Die Anzahl der Durchlaeufe für die Reihe: ");
+                int anzahl = leseInt("Die Anzahl der Durchlaeufe fuer die Reihe: ");
                 double x = leseDouble("Der Wert x der Reihensumme: ");
                 double reihensumme = MathFunctions.berechneReihensumme(anzahl,x);
                 System.out.println( reihensumme + " ist die Summe");
@@ -132,7 +132,7 @@ public class MathDialog{
                 break;
                 
             case 8:
-                int anzahlR = leseInt("Die Anzahl der Durchlaeufe für die Reihe: ");
+                int anzahlR = leseInt("Die Anzahl der Durchlaeufe fuer die Reihe: ");
                 double xR = leseDouble("Der Wert x der Reihensumme: ");
                 double reihensummeR = MathFunctions.berechneReihensummeRekursiv(anzahlR, xR);
                 System.out.println( reihensummeR + " ist die Summe");

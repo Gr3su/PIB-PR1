@@ -124,14 +124,15 @@ public class MathFunctions{
         
         for(int a = 1; a <= Math.pow(zahl,1.0/4.0); a++){
             double aHochVier = a * a * a * a;
+            
             for(int b = 1; b <= Math.cbrt(zahl); b++){
                 double bHochDrei = b * b * b;
                 double c = zahl - aHochVier - bHochDrei;
                 
-                if(Math.sqrt(c) % 1 == 0){
+                if(Math.sqrt(c) % 1 == 0 && c != 0){
+
                     return true;
                 }
-                
             }
         }
         

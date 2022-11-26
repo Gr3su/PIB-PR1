@@ -23,10 +23,6 @@ public class ArtikelDialog{
     public void start(){
         while(killProgram == false){
             try{
-                if(artikel == null){
-                    System.out.println("Artikel Initialisierung wird gestartet\n");
-                    erstelleArtikel();
-                }
                 
                 optionAuswahl(); 
                 
@@ -49,52 +45,58 @@ public class ArtikelDialog{
      * @throws IllegalArgumentException Wenn eine falsche Eingabe getaetigt wurde.
      */
     public void optionAuswahl(){
-        String input = readString("\nVerfügbare Kommandos:\nerstellen - Artikel erstellen\nbucheZugang - Zugang auf Artikel buchen\n"+
-                        "bucheAbgang - Abgang auf Artikel buchen\nsetArt - Setzt die Artikelart neu\nsetBestand - Setze den Bestand neu\n"+
-                        "toString - Gebe in einem String alle Attribute zurück\nStopp - Beendet den Dialog\nEingabe: ").trim();
-                        
-        if(input.isEmpty() == true){
+        byte input = leseByte("\nVerfuegbare Kommandos:\n" +
+                                    "1 - Artikel erstellen\n" +
+                                    "2 - Zugang auf Artikel buchen\n"+
+                                    "3 - Abgang auf Artikel buchen\n" +
+                                    "4 - Setzt die Artikelart neu\n" +
+                                    "5 - Setze den Bestand neu\n"+
+                                    "6 - Gebe in einem String alle Attribute zurueck\n" +
+                                    "7 - Beendet den Dialog\n" +
+                                    "Eingabe: ");
+        if(input < 1 || input > 7){
             throw new IllegalArgumentException(FALSCHE_EINGABE);
         }
-        if(artikel == null && !input.equalsIgnoreCase("erstellen") && !input.equalsIgnoreCase("stopp")){
+                                    
+        if(artikel == null && (input != 1 || input != 7)){
             System.out.println("Artikel wurde noch nicht initialisiert. Objekt initialisierung wird gestartet.");
-            input = "erstellen";
+            input = 1;
         }
         
-        switch(input.toLowerCase()){
-            case "erstellen":
+        switch(input){
+            case 1:
                 if(artikel != null){
-                    input = readString("Artikel existiert bereits, Objekt wirklich überschreiben? (Ja / Nein)");
+                    input = leseByte("Artikel existiert bereits, Objekt wirklich Ueberschreiben? (1: Ja / 0: Nein)");
                     
-                    if(!input.equalsIgnoreCase("ja")){
-                        System.out.println("Artikel wird nicht überschrieben.");
+                    if(input != 1){
+                        System.out.println("Artikel wird nicht Ueberschrieben.");
                         break;
                     }
                 }
                 erstelleArtikel();
                 break;
             
-            case "buchezugang":
-                artikel.bucheZugang(readInt("Menge die dazugebucht werden soll: "));
+            case 2:
+                artikel.bucheZugang(leseInt("Menge die dazugebucht werden soll: "));
                 break;
             
-            case "bucheabgang":
-                artikel.bucheAbgang(readInt("Menge die abgebucht werden soll: "));
+            case 3:
+                artikel.bucheAbgang(leseInt("Menge die abgebucht werden soll: "));
                 break;
                 
-            case "setbestand":
-                artikel.setBestand(readInt("Menge auf die der Bestand geaendert werden soll: "));
+            case 4:
+                artikel.setBestand(leseInt("Menge auf die der Bestand geaendert werden soll: "));
                 break;
                 
-            case "setart":
-                artikel.setArt(readString("Zeichenkette auf die die Art geaendert werden soll: "));
+            case 5:
+                artikel.setArt(leseString("Zeichenkette auf die die Art geaendert werden soll: "));
                 break;
             
-            case "tostring":
-                System.out.println(artikel.toString());
+            case 6:
+                System.out.println(artikel);
                 break;
                 
-            case "stopp":
+            case 7:
                 killProgram = true;
                 break;
                 
@@ -107,25 +109,27 @@ public class ArtikelDialog{
     /**
      * Methode um einen Artikel zu erstellen.
      * Wird aufgerufen wenn <code>artikel</code> auf <code>null</code>
-     * zeigt oder wenn User das Objekt überschreiben will.
+     * zeigt oder wenn User das Objekt Ueberschreiben will.
      * 
      * @throws IllegalArgumentException Wenn etwas anderes als Ja oder Nein eingegeben wurde.
      */
     public void erstelleArtikel(){
-        String konstruktorWahl = readString("Soll der komplette Konstruktor aufgerufen werden? (Ja/Nein)\nEingabe:");
-        if(konstruktorWahl.trim().isEmpty() == true || (!konstruktorWahl.equalsIgnoreCase("ja") && !konstruktorWahl.equalsIgnoreCase("nein"))){
+        byte konstruktorWahl = leseByte("Soll der komplette Konstruktor aufgerufen werden? (1:Ja / 0:Nein)\nEingabe:");
+        
+        if(konstruktorWahl < 0 || konstruktorWahl > 1){
             throw new IllegalArgumentException(FALSCHE_EINGABE);
         }
         
-        int artikelNr = readInt("Die Artikelnummer: ");
-    
-        String art = readString("Die Artikelart: ");
-        if(konstruktorWahl.trim().equalsIgnoreCase("ja")){
-            int bestand = readInt("Der Bestand: ");
+        int artikelNr = leseInt("Die Artikelnummer: ");
+        String art = leseString("Die Artikelart: ");
+        
+        if(konstruktorWahl == 1){
+            int bestand = leseInt("Der Bestand: ");
             
             artikel = new Artikel(artikelNr, art, bestand);
             return;
         }
+        
         artikel = new Artikel(artikelNr, art);
     }
     
@@ -136,9 +140,29 @@ public class ArtikelDialog{
      * 
      * @return Eingabe von User.
      */
-    public String readString(String prompt){
+    public String leseString(String prompt){
         System.out.println(prompt);
+        
         return scanner.nextLine();
+    }
+    
+    /**
+     * Methode um uebergebenen Text auszugeben und Byte einzulesen.
+     * 
+     * @param prompt Text der ausgegeben werden soll.
+     * 
+     * @return Eingabe von User.
+     */
+    public byte leseByte(String prompt){
+        System.out.println(prompt);
+        while(!scanner.hasNextByte()){
+            scanner.next();
+            System.out.println("Falsche Eingabe\n" + prompt);
+        }
+        byte tmp = scanner.nextByte();
+        scanner.nextLine();
+        
+        return tmp;
     }
     
     /**
@@ -150,17 +174,19 @@ public class ArtikelDialog{
      * 
      * @return Eingabe von User.
      */
-    public int readInt(String prompt){
+    public int leseInt(String prompt){
         System.out.println(prompt);
         while(!scanner.hasNextInt()){
-            scanner.nextLine();
+            scanner.next();
             System.out.println("Falsche Eingabe\n" + prompt);
         }
         int tmp = scanner.nextInt();
         scanner.nextLine();
+        
         return tmp;
     }
-      /**
+    
+    /**
      * Main Methode, durch die das Programm gestartet wird.
      * Erstellt Objekt der eigenen Klasse, um nich statische Methode start() aufzurufen.
      */

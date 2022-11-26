@@ -5,7 +5,7 @@ import java.util.Scanner;
  * Beschreiben Sie hier die Klasse MathDialog.
  * 
  * @author Yannick Gross / Tim Mueller
- * @version 20.11.2022 / 21:00Uhr
+ * @version 26.11.2022 / 14:00Uhr
  */
 public class MathDialog{
     private static final String ERROR_FALSCHE_EINGABE = "Falsche Eingabe, bitte erneut versuchen\n";
@@ -58,8 +58,9 @@ public class MathDialog{
                                 "4 : Summe von Potenzen berechnen\n" +
                                 "5 : Den gemeinsamen Teiler zweier Zahlen berechnen\n" +
                                 "6 : Die Fakultaet einer Zahl berechnen\n" +
-                                "7 : Berechnen einer Reihensumme aus einer anzahl und einem x Wert\n" +
-                                "8 : Dialog stoppen";
+                                "7 : Berechnen einer Reihensumme aus einer Anzahl und einem Wert x\n" +
+                                "8 : Berechnen einer Reihensumme aus einer Anzahl und einem Wert x, REKURSIV\n" +
+                                "9 : Dialog stoppen";
                                 
         return leseByte(optionAusgabe);
     }
@@ -96,38 +97,49 @@ public class MathDialog{
                 break;
                 
             case 4:
-                long zahlP = leseLong("zu Prüfende Zahl: ");
-                if(MathFunctions.istSummeVonPotenzen(zahlP) == true)  {
-                    System.out.println(zahlP + " Ist eine Summe aus Potenzen");}
-                else {
-                    System.out.println(zahlP + " Ist keine Summe aus Potenzen");}
+                long zahlP = leseLong("zu Prfende Zahl: ");
+                boolean istSummeP = MathFunctions.istSummeVonPotenzen(zahlP);
+                if(istSummeP == true){
+                  System.out.println(zahlP + " kann als a^4+b^3+c^2 dargestellt werden.");
+                }
+                else{
+                  System.out.println(zahlP + " kann nicht als a^4+b^3+c^2 dargestellt werden.");
+                }
                 option = -1;
                 break;
                 
             case 5:
-                int zahl1 = leseInt("erste Zahl: ");
-                int zahl2 = leseInt("zweite Zahl: ");
+                int zahl1 = leseInt("Erste Zahl: ");
+                int zahl2 = leseInt("Zweite Zahl: ");
                 int gemeinsamerTeiler = MathFunctions.berechneGgt(zahl1, zahl2);
-                System.out.println(gemeinsamerTeiler + " ist der gemeinsame Teiler ");
+                System.out.println(gemeinsamerTeiler + " ist der gemeinsame Teiler von " + zahl1 + " und " + zahl2);
                 option = -1;
                 break;
                 
             case 6:
                 int zahlF = leseInt("Zahl eingeben zur berechnung der Fakultaet: ");
-                long fakultaet = MathFunctions.berechneFakultät(zahlF);
-                System.out.println( fakultaet + " ist die Fakultaet ");
+                long fakultaet = MathFunctions.berechneFakultaet(zahlF);
+                System.out.println( fakultaet + " ist die Fakultaet von " + zahlF);
                 option = -1;
                 break;
                 
             case 7:
-                int anzahl = leseInt("Die anzahl n der Reihensumme: ");
+                int anzahl = leseInt("Die Anzahl der Durchlaeufe fÃ¼r die Reihe: ");
                 double x = leseDouble("Der Wert x der Reihensumme: ");
                 double reihensumme = MathFunctions.berechneReihensumme(anzahl,x);
-                System.out.println( reihensumme + " ist die Reihensumme ");
+                System.out.println( reihensumme + " ist die Summe");
                 option = -1;
                 break;
                 
             case 8:
+                int anzahlR = leseInt("Die Anzahl der Durchlaeufe fÃ¼r die Reihe: ");
+                double xR = leseDouble("Der Wert x der Reihensumme: ");
+                double reihensummeR = MathFunctions.berechneReihensummeRekursiv(anzahlR, xR);
+                System.out.println( reihensummeR + " ist die Summe");
+                option = -1;
+                break;
+                
+            case 9:
                 killProgram = true;
                 break;
             

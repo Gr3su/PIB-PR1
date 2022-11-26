@@ -53,7 +53,7 @@ public class MathDialog{
     public byte optionAuswahl(){
         String optionAusgabe = "Folgende Funktionen sind auswaehlbar:\n" +
                                 "1 : Teilersumme berechnen\n" +
-                                "2 : Prüfziffer einer ISBN berechnen\n" +
+                                "2 : Pruefziffer einer ISBN berechnen\n" +
                                 "3 : Nullstellen von quad. Gleichung mit pq-Formel berechnen\n" +
                                 "4 : Dialog stoppen";
                                 

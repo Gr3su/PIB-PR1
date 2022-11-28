@@ -5,7 +5,7 @@ import java.util.Scanner;
  * Beschreiben Sie hier die Klasse MathDialog.
  * 
  * @author Yannick Gross / Tim Mueller
- * @version 26.11.2022 / 14:00Uhr
+ * @version 28.11.2022 / 19:00Uhr
  */
 public class MathDialog{
     private static final String ERROR_FALSCHE_EINGABE = "Falsche Eingabe, bitte erneut versuchen\n";

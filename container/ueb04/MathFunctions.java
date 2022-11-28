@@ -12,6 +12,7 @@ public class MathFunctions{
     public static final String ERROR_KEINE_ISBN = "Eingegebene Zahl keine ISBN\n";
     public static final String ERROR_GROESSER_NULL = "Eingegebene Zahl muss groesser 0 sein\n";
     public static final String ERROR_NICHT_NEGATIV_SEIN = "Eingegebene Zahl darf nicht negativ sein\n";
+    public static final String ERROR_NICHT_NULL = "Eingegebene Zahl darf nich 0 sein";
     private static final double ERROR = 0.00001;
     
     private MathFunctions(){
@@ -160,7 +161,7 @@ public class MathFunctions{
             zahl1 = tmp;
         }
         
-        int ggt = 0;
+        int ggt = 1;
         while(true){
             if(zahl1 % zahl2 == 0){
                 break;
@@ -202,11 +203,15 @@ public class MathFunctions{
      * @return Die Reihensumme aus dem Wert x und der ganzen Zahl anzahl (n).
      * 
      * @throws IllegalArgumentException Wenn <code>anzahl</code> kleiner 1 ist.
+     * @throws IllegalArgumentException Wenn <code>x</code> 0 ist.
      */
     
     public static double berechneReihensumme(int anzahl, double x){
         if(anzahl <= 0){
             throw new IllegalArgumentException(ERROR_GROESSER_NULL);
+        }
+        if(x == 0){
+            throw new IllegalArgumentException(ERROR_NICHT_NULL);    
         }
         double reihenSumme = 0;
         for(int i = 1; i <= anzahl; i++){ 
@@ -223,12 +228,15 @@ public class MathFunctions{
      * @return Die Reihensumme aus dem Wert x und der ganzen Zahl anzahl (n).
      * 
      * @throws IllegalArgumentException Wenn <code>anzahl</code> kleiner 1 ist.
+     * @throws IllegalArgumentException Wenn <code>x</code> 0 ist.
      */
     public static double berechneReihensummeRekursiv(int anzahl, double x){
         if(anzahl <= 0){
-          throw new IllegalArgumentException(ERROR_GROESSER_NULL);
+            throw new IllegalArgumentException(ERROR_GROESSER_NULL);
         }
-    
+        if(x == 0){
+            throw new IllegalArgumentException(ERROR_NICHT_NULL);    
+        }
         if(anzahl == 1){
             return (x-1)/x;
         }

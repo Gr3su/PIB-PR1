@@ -6,14 +6,14 @@ import java.lang.Math;
  * Werkzeugmethoden fuer mathematische Operationen
  * 
  * @author Yannick Gross / Tim Mueller
- * @version 26.11.2022 / 14:00Uhr
+ * @version 28.11.2022 / 19:00Uhr
  */
 public class MathFunctions{
     public static final String ERROR_KEINE_ISBN = "Eingegebene Zahl keine ISBN\n";
     public static final String ERROR_GROESSER_NULL = "Eingegebene Zahl muss groesser 0 sein\n";
     public static final String ERROR_NICHT_NEGATIV_SEIN = "Eingegebene Zahl darf nicht negativ sein\n";
     public static final String ERROR_NICHT_NULL = "Eingegebene Zahl darf nich 0 sein";
-    public static final String ERROR_EINGABE_ZU_GROSS = "Eingegebene Zahl zu groß zur Berechnung.\n";
+    public static final String ERROR_EINGABE_ZU_GROSS = "Eingegebene Zahl zu gross zur Berechnung.\n";
     private static final double ERROR = 0.00001;
     private static final int ISBN_MIN = 100000000;
     private static final int ISBN_MAX = 1000000000;
@@ -223,6 +223,11 @@ public class MathFunctions{
         for(int i = 1; i <= anzahl; i++){ 
             reihenSumme += Math.pow((x - 1),i) / (i * Math.pow(x,i));  
         }
+        
+        if(Double.isNaN(reihenSumme)){
+            throw new IllegalArgumentException(ERROR_EINGABE_ZU_GROSS);
+        }
+        
         return reihenSumme;
     }
 
@@ -246,7 +251,12 @@ public class MathFunctions{
         if(anzahl == 1){
             return (x-1)/x;
         }
+        double tmp = Math.pow(x-1,anzahl)/(anzahl * Math.pow(x,anzahl)) + berechneReihensumme(anzahl - 1, x);
         
-        return Math.pow(x-1,anzahl)/(anzahl * Math.pow(x,anzahl)) + berechneReihensumme(anzahl - 1, x);
+        if(Double.isNaN(tmp)){
+            throw new IllegalArgumentException(ERROR_EINGABE_ZU_GROSS);
+        }
+        
+        return tmp;
     }  
 }

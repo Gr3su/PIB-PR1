@@ -13,8 +13,14 @@ public class MathFunctions{
     public static final String ERROR_GROESSER_NULL = "Eingegebene Zahl muss groesser 0 sein\n";
     public static final String ERROR_NICHT_NEGATIV_SEIN = "Eingegebene Zahl darf nicht negativ sein\n";
     public static final String ERROR_NICHT_NULL = "Eingegebene Zahl darf nich 0 sein";
+    public static final String ERROR_EINGABE_ZU_GROSS = "Eingegebene Zahl zu groß zur Berechnung.\n";
     private static final double ERROR = 0.00001;
+    private static final int ISBN_MIN = 100000000;
+    private static final int ISBN_MAX = 1000000000;
     
+    /**
+     * Verhindert die Erstellung eines Objekts.
+     */
     private MathFunctions(){
     }
     
@@ -61,7 +67,7 @@ public class MathFunctions{
         if(isbn < 0){
             throw new IllegalArgumentException(ERROR_NICHT_NEGATIV_SEIN);
         }
-        if(isbn / 100000000 == 0 || isbn / 1000000000 > 0){
+        if(isbn / ISBN_MIN == 0 || isbn / ISBN_MAX > 0){
             throw new IllegalArgumentException(ERROR_KEINE_ISBN);
         }
         
@@ -161,18 +167,14 @@ public class MathFunctions{
             zahl1 = tmp;
         }
         
-        int ggt = 1;
-        while(true){
-            if(zahl1 % zahl2 == 0){
-                break;
-            }
-            
-            ggt = zahl1 % zahl2;
+        int tmp;
+        while(zahl2 != 0){
+            tmp = zahl1;
             zahl1 = zahl2;
-            zahl2 = ggt;
+            zahl2 = tmp % zahl2;
         }
         
-        return ggt;
+        return zahl1;
     }
     
     /**
@@ -188,6 +190,10 @@ public class MathFunctions{
         if(zahl < 0){
             throw new IllegalArgumentException(ERROR_NICHT_NEGATIV_SEIN);
         }
+        if(zahl > 20){
+            throw new IllegalArgumentException(ERROR_EINGABE_ZU_GROSS);    
+        }
+        
         long fakultaet = 1;
         for(int i = 0; i < zahl; i++){
             fakultaet *= (i + 1);

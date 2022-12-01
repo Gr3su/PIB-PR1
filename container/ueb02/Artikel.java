@@ -6,44 +6,37 @@ package container.ueb02;
  */
 public class Artikel{
    //Fehlermeldungen
-   private static final String ARTIKELNUMMER = "Die Artikelnummer muss vierstellig und positiv sein";
-   private static final String ARTIKELART = "Die Artikelart muss eine Zeichenkette sein";
-   private static final String BESTAND = "Der Bestand darf nicht negativ sein";
-   private static final String BUCHUNG = "Die Buchungsmenge darf nicht negativ sein";
-   private static final int ARTIKELNR_OBERGRENZE = 9999;
-   private static final int ARTIKELNR_UNTERGRENZE = 999;
+   private static final String ERROR_ARTIKELNUMMER_VIERSTELLIG =    "Die Artikelnummer muss vierstellig und positiv sein";
+   private static final String ERROR_ARTIKELART_ZEICHENKETTE =      "Die Artikelart muss eine Zeichenkette sein";
+   private static final String ERROR_BESTAND_POSITIV =              "Der Bestand muss positiv sein";
+   private static final String ERROR_BUCHUNG_POSITIV =              "Die Buchungsmenge muss positiv sein";
+   private static final String ERROR_PREIS_POSITIV =                "Der Preis muss positiv sein";
+   private static final int ARTIKELNR_OBERGRENZE =                  9999;
+   private static final int ARTIKELNR_UNTERGRENZE =                 999;
    
-   //Attribute für die Klasse Artikel
-   private int artikelNr;
+   //Attribute fuer die Klasse Artikel
    private String art;
+   private int artikelNr;
    private int bestand;
    /**
-    * Konstruktor für die Klasse Artikel mit allen Attributen.
+    * Konstruktor fuer die Klasse Artikel mit allen Attributen.
     * 
     * @param artikelNr Artikelnummer des Artikels.
     * @param art Art des Artikels.
     * @param bestand Aktueller Bestand / Anzahl des Artikels.
+    * @param preis Preis des Artikels
     * 
     * @throws IllegalArgumentException Wenn artikelNr kleiner als 1 ist.
     * @throws IllegalArgumentException Wenn art nicht eingegeben wurde.
     * @throws IllegalArgumentException Wenn bestand kleiner als 0 ist.
     */
    public Artikel(int artikelNr, String art, int bestand) {
-       
-       if(artikelNr < 0){
-           throw new IllegalArgumentException(ARTIKELNUMMER);
-       }
-       
-       if(artikelNr > ARTIKELNR_OBERGRENZE || artikelNr <= ARTIKELNR_UNTERGRENZE){
-           throw new IllegalArgumentException(ARTIKELNUMMER);
+       if(artikelNr > ARTIKELNR_OBERGRENZE || artikelNr <= ARTIKELNR_UNTERGRENZE || artikelNr < 0){
+           throw new IllegalArgumentException(ERROR_ARTIKELNUMMER_VIERSTELLIG);
         }
        
        if(art.isBlank() || art == null){
-           throw new IllegalArgumentException(ARTIKELART);
-       }
-        
-       if(bestand < 0){
-           throw new IllegalArgumentException(BESTAND);
+           throw new IllegalArgumentException(ERROR_ARTIKELART_ZEICHENKETTE);
        }
        
        this.artikelNr = artikelNr;
@@ -52,7 +45,7 @@ public class Artikel{
    }
    
    /**
-    * Konstruktor für die Klasse Artikel mit den Attributen artikelNr und art.
+    * Konstruktor fuer die Klasse Artikel mit den Attributen artikelNr und art.
     * 
     * @param artikelNr Artikelnummer des Artikels.
     * @param art Art des Artikels
@@ -68,21 +61,21 @@ public class Artikel{
     */
    
    /**
-    * Erhöht den Bestand um die übergebene Menge.
+    * Erhoeht den Bestand um die übergebene Menge.
     * 
-    * @param menge Betrag um den Bestand erhöht wird.
+    * @param menge Betrag um den Bestand erhoeht wird.
     * 
     * @throws IllegalArgumentException Wenn Buchung eine negative Zahl ist.
     */
    public void bucheZugang(int menge){
        if(menge < 0){
-           throw new IllegalArgumentException(BUCHUNG);
+           throw new IllegalArgumentException(ERROR_BUCHUNG_POSITIV);
        }   
        bestand += menge; 
    }
 
    /**
-    * Verringert den Bestand um die übergebene Menge.
+    * Verringert den Bestand um die uebergebene Menge.
     * 
     * @param menge Betrag um den der Bestand verringert wird.
     * 
@@ -91,11 +84,11 @@ public class Artikel{
     */
    public void bucheAbgang(int menge){
        if(menge < 0){
-           throw new IllegalArgumentException(BUCHUNG);
+           throw new IllegalArgumentException(ERROR_BUCHUNG_POSITIV);
        }
        
        if(bestand - menge < 0){
-           throw new IllegalArgumentException(BESTAND); 
+           throw new IllegalArgumentException(ERROR_BESTAND_POSITIV); 
        }
        bestand -= menge;
    }
@@ -128,7 +121,7 @@ public class Artikel{
    }
 
    /**
-    * Überschreibt den Bestand des Artikels mit dem übergebenem Wert.
+    * Ueberschreibt den Bestand des Artikels mit dem uebergebenen Wert.
     * 
     * @param bestand Neuer Bestand des Artikels.
     * 
@@ -136,13 +129,13 @@ public class Artikel{
     */
    public void setBestand(int bestand){
        if(bestand < 0){
-           throw new IllegalArgumentException(BESTAND);
+           throw new IllegalArgumentException(ERROR_BESTAND_POSITIV);
        }
        this.bestand = bestand;
    }
    
    /**
-    * Überschreibt die Art des Artikels mit dem übergebenem Wert.
+    * Ueberschreibt die Art des Artikels mit dem uebergebenem Wert.
     * 
     * @param art Neue Art des Artikels.
     * 
@@ -150,18 +143,18 @@ public class Artikel{
     */
    public void setArt(String art){
        if(art.trim().isEmpty() == true || art == null){
-           throw new IllegalArgumentException(ARTIKELART); 
+           throw new IllegalArgumentException(ERROR_ARTIKELART_ZEICHENKETTE); 
        }
        
        this.art = art;     
    }
-   
    
    /**
     * Bereitet eine Zeichenkette auf, die alle Attribute des Artikels beinhaltet.
     * 
     * @return Zeichenkette mit den Objekt-Attributen, getrennt durch Semikolon.
     */
+   @Override
    public String toString(){
        return("Artikelnummer: " + artikelNr + "; Artikelart " + art + "; Bestand "
        + bestand);

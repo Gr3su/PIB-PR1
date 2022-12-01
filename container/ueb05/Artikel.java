@@ -1,4 +1,4 @@
-package container.ueb02;
+package container.ueb05;
 /**
  * 
  * @author Tim Mueller / Yannick Gross
@@ -18,6 +18,7 @@ public class Artikel{
    private String art;
    private int artikelNr;
    private int bestand;
+   private double preis;
    /**
     * Konstruktor fuer die Klasse Artikel mit allen Attributen.
     * 
@@ -30,7 +31,7 @@ public class Artikel{
     * @throws IllegalArgumentException Wenn art nicht eingegeben wurde.
     * @throws IllegalArgumentException Wenn bestand kleiner als 0 ist.
     */
-   public Artikel(int artikelNr, String art, int bestand) {
+   public Artikel(int artikelNr, String art, int bestand, double preis) {
        if(artikelNr > ARTIKELNR_OBERGRENZE || artikelNr <= ARTIKELNR_UNTERGRENZE || artikelNr < 0){
            throw new IllegalArgumentException(ERROR_ARTIKELNUMMER_VIERSTELLIG);
         }
@@ -42,6 +43,18 @@ public class Artikel{
        this.artikelNr = artikelNr;
        setArt(art);
        setBestand(bestand);
+       setPreis(preis);
+   }
+   
+   /**
+    * Konstruktor fuer die Klasse Artikel mit den Attributen artikelNr, art und Preis.
+    * 
+    * @param artikelNr Artikelnummer des Artikels.
+    * @param art Art des Artikels.
+    * @param preis Preis des Artikels.
+    */
+   public Artikel(int artikelNr, String art, double preis){
+       this(artikelNr, art, 0, preis);
    }
    
    /**
@@ -51,7 +64,7 @@ public class Artikel{
     * @param art Art des Artikels
     */
    public Artikel(int artikelNr, String art){
-       this(artikelNr, art, 0);
+       this(artikelNr, art, 0, 0.0);
    }
    
    /* Kein Standardkonstruktor wie Artikel(), da ein Artikel
@@ -119,6 +132,15 @@ public class Artikel{
    public int getBestand(){
        return bestand;
    }
+   
+   /**
+    * Gibt den Preis des Artikels zurueck.
+    * 
+    * @return Preis des Artikels.
+    */
+   public double getPreis(){
+       return preis;
+   }
 
    /**
     * Ueberschreibt den Bestand des Artikels mit dem uebergebenen Wert.
@@ -147,6 +169,20 @@ public class Artikel{
        }
        
        this.art = art;     
+   }
+   
+   /**
+    * Ueberschreibt des Preis des Artikels.
+    * 
+    * @praram preis Neuer Preis des Artikels.
+    * 
+    * @throws IllegalArgumentException Wenn Preis negativ ist.
+    */
+   public void setPreis(double preis){
+       if(preis < 0){
+           throw new IllegalArgumentException(ERROR_PREIS_POSITIV);
+       }
+       this.preis = preis;
    }
    
    /**

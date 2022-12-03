@@ -13,8 +13,8 @@ public class Lager{
     private static final String ERROR_KEIN_OBJEKT =            "Es wurde kein gueltiges Objekt angegeben.\n";
     private static final String ERROR_LAGER_VOLL =             "Artikel konnte nicht angelegt werden, weil das Lager voll ist.\n";
     private static final String ERROR_ARTIKEL_NICHT_GEFUNDEN = "Der gewuenschte Artikel wurde nicht im Lager gefunden.\n";
-    private static final String ERROR_PROZENT_POSITIV =        "Der Prozentsatz muss positiv sein.\n";
     private static final String ERROR_INDEX_FALSCH =           "Der angegebene Index ist falsch. Er muss liegen, zwischen 0 und ";
+    private static final String ERROR_ARTIKEL_EXISTIERT =      "Die eingegebene Artikelnummer existiert bereits.\n";
     //Attribute
     private Artikel[] lagerFeld;
     private final int lagerGroesse;
@@ -41,9 +41,13 @@ public class Lager{
         if(lagerBestand == lagerGroesse){
             throw new IllegalArgumentException(ERROR_LAGER_VOLL);
         }
+        if(istArtikelGelagert(artikel.getArtikelNr()) == true){
+            throw new IllegalArgumentException(ERROR_ARTIKEL_EXISTIERT);
+        }
         
         lagerFeld[lagerBestand] = artikel;
         lagerBestand++;
+        
     }
     
     public void entferneArtikel(int artikelNr){
@@ -64,42 +68,31 @@ public class Lager{
     public void bucheZugang(int artikelNr, int zugang){
         int index = getIndexArtikel(artikelNr);
         
-        lagerFeld[index].bucheZugang(zugang);
+        getArtikel(index).bucheZugang(zugang);
     }
     
     public void bucheAbgang(int artikelNr, int abgang){
         int index = getIndexArtikel(artikelNr);
         
-        lagerFeld[index].bucheAbgang(abgang);
+        getArtikel(index).bucheAbgang(abgang);
     }
     
     public void aenderePreisEinesArtikels(int artikelNr, double prozent){
-        if(prozent < 0){
-            throw new IllegalArgumentException(ERROR_PROZENT_POSITIV);
-        }
-        
         int index = getIndexArtikel(artikelNr);
-        Artikel tmp = lagerFeld[index];
+        Artikel tmp = getArtikel(index);
         
-        tmp.setPreis(tmp.getPreis() * prozent);
+        tmp.setPreis(tmp.getPreis() * (1.0 + prozent / 100));
     }
     
     public void aenderePreisAllerArtikel(double prozent){
-        if(prozent < 0){
-            throw new IllegalArgumentException(ERROR_PROZENT_POSITIV);
-        }
-        
         for(Artikel tmp: lagerFeld){
-            tmp.setPreis(tmp.getPreis() * prozent);
+            tmp.setPreis(tmp.getPreis() * (1.0 + prozent / 100));
         }
     }
     
     public Artikel getArtikel(int index){
         if(index < 0 || index > lagerGroesse - 1){
             throw new IllegalArgumentException(ERROR_INDEX_FALSCH + String.valueOf(lagerGroesse - 1));
-        }
-        if(lagerFeld[index] == null){
-            throw new IllegalArgumentException(ERROR_ARTIKEL_NICHT_GEFUNDEN);
         }
         
         return lagerFeld[index];
@@ -115,7 +108,7 @@ public class Lager{
     
     @Override
     public String toString(){
-        String lager = "; LagerFeld: ";
+        String lager = ";\nLagerFeld:\n";
         for(Artikel tmp: lagerFeld){
             if(tmp != null){
                 lager += tmp.toString() + "\n";
@@ -126,15 +119,25 @@ public class Lager{
                 + String.valueOf(lagerBestand) + lager;
     }
     
-    private int getIndexArtikel(int artikelNr){
-        int index = -1;
+    public boolean istArtikelGelagert(int artikelNr){
         for(int i = 0; i < lagerBestand; i++){
             if(lagerFeld[i].getArtikelNr() == artikelNr){
-                index = i;
-                break;
+                return true;
             }
         }
         
-        return index;
+        return false;
+    }
+    
+    public int getIndexArtikel(int artikelNr){
+        int index;
+        for(int i = 0; i < lagerBestand; i++){
+            if(lagerFeld[i].getArtikelNr() == artikelNr){
+                index = i;
+                return index;
+            }
+        }
+        
+        throw new IllegalArgumentException(ERROR_ARTIKEL_NICHT_GEFUNDEN);
     }
 }

@@ -9,11 +9,13 @@ import java.util.Scanner;
  */
 public class ArtikelDialog{
     //Fehlermeldung
-    private static final String FALSCHE_EINGABE =   "Falsche Eingabe, Anweisungen genau lesen.";
+    private static final String ERROR_OPTION_NICHT_GEFUNDEN =   "Option wurde nicht gefunden\n";
+    private static final String ERROR_OPTION_NUMMER =           "Es koennen nur folgende Option-Nummern angenommen werden: 1-";
+    private static final String ERROR_FALSCHER_DATENTYP =       "Falscher Datentyp wurde eingegeben.\n";
     
-    private static Scanner scanner =                new Scanner(System.in);
-    private static Artikel artikel =                null;
-    private static boolean killProgram =            false;
+    private static Scanner scanner =                            new Scanner(System.in);
+    private static Artikel artikel =                            null;
+    private static boolean killProgram =                        false;
     
     /**
      * Methode in der das Hauptprogramm laeuft.
@@ -55,7 +57,7 @@ public class ArtikelDialog{
                                     "7 - Beendet den Dialog\n" +
                                     "Eingabe: ");
         if(input < 1 || input > 7){
-            throw new IllegalArgumentException(FALSCHE_EINGABE);
+            throw new IllegalArgumentException(ERROR_OPTION_NUMMER + "7\n");
         }
                                     
         if(artikel == null && (input != 1 || input != 7)){
@@ -66,14 +68,14 @@ public class ArtikelDialog{
         switch(input){
             case 1:
                 if(artikel != null){
-                    input = leseByte("Artikel existiert bereits, Objekt wirklich Ueberschreiben? (1: Ja / 0: Nein)");
+                    input = leseByte("Artikel existiert bereits, Objekt wirklich Ueberschreiben? (1: Ja / 2: Nein)");
                     
                     if(input != 1){
                         System.out.println("Artikel wird nicht Ueberschrieben.");
                         break;
                     }
                 }
-                erstelleArtikel();
+                artikel = erstelleArtikel();
                 break;
             
             case 2:
@@ -101,7 +103,7 @@ public class ArtikelDialog{
                 break;
                 
             default:
-                throw new IllegalArgumentException(FALSCHE_EINGABE);
+                throw new IllegalArgumentException(ERROR_OPTION_NICHT_GEFUNDEN);
         }
         
     }
@@ -113,11 +115,14 @@ public class ArtikelDialog{
      * 
      * @throws IllegalArgumentException Wenn etwas anderes als Ja oder Nein eingegeben wurde.
      */
-    public void erstelleArtikel(){
-        byte konstruktorWahl = leseByte("Soll der komplette Konstruktor aufgerufen werden? (1:Ja / 0:Nein)\nEingabe:");
+    public static Artikel erstelleArtikel(){
+        byte konstruktorWahl = leseByte("Welcher Konstruktor soll aufgerufen werden:\n" +
+                                        "1 - Hauptkonstruktor\n" +
+                                        "2 - Ohne Bestand\n" +
+                                        "3 - Ohne Bestand und ohne Preis\n");
         
-        if(konstruktorWahl < 0 || konstruktorWahl > 1){
-            throw new IllegalArgumentException(FALSCHE_EINGABE);
+        if(konstruktorWahl < 1 || konstruktorWahl > 3){
+            throw new IllegalArgumentException(ERROR_OPTION_NUMMER + "3\n");
         }
         
         int artikelNr = leseInt("Die Artikelnummer: ");
@@ -125,12 +130,18 @@ public class ArtikelDialog{
         
         if(konstruktorWahl == 1){
             int bestand = leseInt("Der Bestand: ");
+            double preis = leseDouble("Der Preis: ");
             
-            artikel = new Artikel(artikelNr, art, bestand);
-            return;
+            return new Artikel(artikelNr, art, bestand, preis);
         }
         
-        artikel = new Artikel(artikelNr, art);
+        if(konstruktorWahl == 2){
+            double preis = leseDouble("Der Preis: ");
+            
+            return new Artikel(artikelNr, art, preis);
+        }
+        
+        return new Artikel(artikelNr, art);
     }
     
     /**
@@ -140,7 +151,7 @@ public class ArtikelDialog{
      * 
      * @return Eingabe von User.
      */
-    public String leseString(String prompt){
+    public static String leseString(String prompt){
         System.out.println(prompt);
         
         return scanner.nextLine();
@@ -153,11 +164,11 @@ public class ArtikelDialog{
      * 
      * @return Eingabe von User.
      */
-    public byte leseByte(String prompt){
+    public static byte leseByte(String prompt){
         System.out.println(prompt);
         while(!scanner.hasNextByte()){
             scanner.next();
-            System.out.println("Falsche Eingabe\n" + prompt);
+            System.out.println(ERROR_FALSCHER_DATENTYP + prompt);
         }
         byte tmp = scanner.nextByte();
         scanner.nextLine();
@@ -174,13 +185,34 @@ public class ArtikelDialog{
      * 
      * @return Eingabe von User.
      */
-    public int leseInt(String prompt){
+    public static int leseInt(String prompt){
         System.out.println(prompt);
         while(!scanner.hasNextInt()){
             scanner.next();
-            System.out.println("Falsche Eingabe\n" + prompt);
+            System.out.println(ERROR_FALSCHER_DATENTYP + prompt);
         }
         int tmp = scanner.nextInt();
+        scanner.nextLine();
+        
+        return tmp;
+    }
+    
+    /**
+     * Methode um uebergebenen Text auszugeben und double einzulesen.
+     * Wenn kein double eingegeben wurde, wiederholt sich die Aufforderung,
+     * bis einer eingegeben wurde.
+     * 
+     * @param prompt Text der ausgegeben werden soll.
+     * 
+     * @return Eingabe von User.
+     */
+    public static double leseDouble(String prompt){
+        System.out.println(prompt);
+        while(!scanner.hasNextDouble()){
+            scanner.next();
+            System.out.println(ERROR_FALSCHER_DATENTYP + prompt);
+        }
+        double tmp = scanner.nextDouble();
         scanner.nextLine();
         
         return tmp;

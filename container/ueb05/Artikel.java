@@ -192,7 +192,7 @@ public class Artikel{
     */
    @Override
    public String toString(){
-       return("Artikelnummer: " + artikelNr + "; Artikelart " + art + "; Bestand "
-       + bestand);
+       return("Artikelnummer: " + artikelNr + "; Artikelart: " + art + "; Preis: " + preis +
+       "; Bestand: " + bestand);
    }
    }

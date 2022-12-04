@@ -1,19 +1,19 @@
 #BlueJ package file
-dependency1.from=Lager
-dependency1.to=Artikel
+dependency1.from=LagerDialog
+dependency1.to=Lager
 dependency1.type=UsesDependency
 dependency2.from=LagerDialog
-dependency2.to=Lager
+dependency2.to=ArtikelDialog
 dependency2.type=UsesDependency
-dependency3.from=LagerDialog
-dependency3.to=ArtikelDialog
+dependency3.from=Lager
+dependency3.to=Artikel
 dependency3.type=UsesDependency
 dependency4.from=ArtikelDialog
 dependency4.to=Artikel
 dependency4.type=UsesDependency
 objectbench.height=184
-objectbench.width=1014
-package.divider.horizontal=0.5373684210526316
+objectbench.width=1031
+package.divider.horizontal=0.5463157894736842
 package.divider.vertical=0.8002092050209205
 package.editor.height=758
 package.editor.width=1785

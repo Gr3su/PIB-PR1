@@ -54,14 +54,16 @@ public class ArtikelDialog{
                                     "3 - Abgang auf Artikel buchen\n" +
                                     "4 - Setzt die Artikelart neu\n" +
                                     "5 - Setze den Bestand neu\n"+
-                                    "6 - Gebe in einem String alle Attribute zurueck\n" +
-                                    "7 - Beendet den Dialog\n" +
+                                    "6 - Setze den Preis neu\n" +
+                                    "7 - Aendere Preis um Prozent\n" +
+                                    "8 - Gebe in einem String alle Attribute zurueck\n" +
+                                    "9 - Beendet den Dialog\n" +
                                     "Eingabe: ");
-        if(input < 1 || input > 7){
-            throw new IllegalArgumentException(ERROR_OPTION_NUMMER + "7\n");
+        if(input < 1 || input > 9){
+            throw new IllegalArgumentException(ERROR_OPTION_NUMMER + "9\n");
         }
                                     
-        if(artikel == null && (input != 1 || input != 7)){
+        if(artikel == null && input > 1 && input < 9){
             System.out.println("Artikel wurde noch nicht initialisiert. Objekt initialisierung wird gestartet.");
             input = 1;
         }
@@ -96,10 +98,18 @@ public class ArtikelDialog{
                 break;
             
             case 6:
-                System.out.println(artikel);
+                artikel.setPreis(leseDouble("Neuer preis: "));
                 break;
                 
             case 7:
+                artikel.aenderePreis(leseDouble("Prozentsatz um den der Preis geaendert wird: "));
+                break;
+                
+            case 8:
+                System.out.println(artikel);
+                break;
+                
+            case 9:
                 killProgram = true;
                 break;
                 

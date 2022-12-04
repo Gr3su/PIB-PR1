@@ -7,11 +7,12 @@ package container.ueb05;
 
 public class Artikel{
    //Fehlermeldungen
-   private static final String ERROR_ARTIKELNUMMER_VIERSTELLIG =    "Die Artikelnummer muss vierstellig und positiv sein";
-   private static final String ERROR_ARTIKELART_ZEICHENKETTE =      "Die Artikelart muss eine Zeichenkette sein";
-   private static final String ERROR_BESTAND_POSITIV =              "Der Bestand muss positiv sein";
-   private static final String ERROR_BUCHUNG_POSITIV =              "Die Buchungsmenge muss positiv sein";
-   private static final String ERROR_PREIS_POSITIV =                "Der Preis muss positiv sein";
+   private static final String ERROR_ARTIKELNUMMER_VIERSTELLIG =    "Die Artikelnummer muss vierstellig und positiv sein\n";
+   private static final String ERROR_ARTIKELART_ZEICHENKETTE =      "Die Artikelart muss eine Zeichenkette sein\n";
+   private static final String ERROR_BESTAND_POSITIV =              "Der Bestand muss positiv sein\n";
+   private static final String ERROR_BUCHUNG_POSITIV =              "Die Buchungsmenge muss positiv sein\n";
+   private static final String ERROR_PREIS_POSITIV =                "Der Preis muss positiv sein\n";
+   private static final String ERROR_ZU_VIEL_ABGEZOGEN =            "Der Preis kann maximal um 100% reduziert werden\n";
    private static final int ARTIKELNR_OBERGRENZE =                  9999;
    private static final int ARTIKELNR_UNTERGRENZE =                 999;
    
@@ -105,6 +106,14 @@ public class Artikel{
            throw new IllegalArgumentException(ERROR_BESTAND_POSITIV); 
        }
        bestand -= menge;
+   }
+   
+   public void aenderePreis(double prozent){
+       if(prozent < -100.0){
+           throw new IllegalArgumentException(ERROR_ZU_VIEL_ABGEZOGEN);
+       }
+       
+       this.preis *= (1.0 + prozent / 100);
    }
 
    /**

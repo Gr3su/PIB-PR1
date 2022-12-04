@@ -78,18 +78,12 @@ public class Lager{
      * in Array gefunden wurde.
      */
     public void entferneArtikel(int artikelNr){
-        
         int index = getIndexArtikel(artikelNr);
         
-        if(index != -1){
-            lagerFeld[index] = null;
-            lagerFeld[index] = lagerFeld[lagerBestand];
-            lagerFeld[lagerBestand] = null;
-            lagerBestand--;
-            return;
-        }
-        
-        throw new IllegalArgumentException(ERROR_ARTIKEL_NICHT_GEFUNDEN);
+        lagerFeld[index] = null;
+        lagerFeld[index] = lagerFeld[lagerBestand - 1];
+        lagerFeld[lagerBestand - 1] = null;
+        lagerBestand--;
     }
     
     /**
@@ -126,7 +120,7 @@ public class Lager{
         int index = getIndexArtikel(artikelNr);
         Artikel tmp = getArtikel(index);
         
-        tmp.setPreis(tmp.getPreis() * (1.0 + prozent / 100));
+        tmp.aenderePreis(prozent);
     }
     
     /**
@@ -137,7 +131,7 @@ public class Lager{
     public void aenderePreisAllerArtikel(double prozent){
         for(Artikel tmp: lagerFeld){
             if(tmp != null){
-                tmp.setPreis(tmp.getPreis() * (1.0 + prozent / 100));
+                tmp.aenderePreis(prozent);
             }
         }
     }
@@ -172,7 +166,7 @@ public class Lager{
         String lager = ";\nLagerFeld:\n";
         for(Artikel tmp: lagerFeld){
             if(tmp != null){
-                lager += tmp.toString() + "\n";
+                lager += tmp + "\n";
             }
         }
         

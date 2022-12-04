@@ -5,8 +5,9 @@ import java.util.Scanner;
 /**
  * 
  * @author Tim Mueller / Yannick Gross
- * @version 12.11.2022 / 23:14
+ * @version 03.12.2022 / 21:10
  */
+
 public class ArtikelDialog{
     //Fehlermeldung
     private static final String ERROR_OPTION_NICHT_GEFUNDEN =   "Option wurde nicht gefunden\n";

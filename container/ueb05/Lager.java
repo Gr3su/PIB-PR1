@@ -5,8 +5,9 @@ package container.ueb05;
  * Klasse zum Lagern und Verwalten von Artikel Objekten.
  * 
  * @author Tim Mueller / Yannick Gross
- * @version (eine Versionsnummer oder ein Datum)
+ * @version 03.12.2022 / 21:10
  */
+
 public class Lager{
     //Fehlermeldungen
     private static final String ERROR_LAGERGROESSE_MEHR =      "Die Groesse des Lagers muss mindestens 1 betragen.\n";
@@ -20,6 +21,12 @@ public class Lager{
     private final int lagerGroesse;
     private int lagerBestand;
     
+    /**
+     * Konstruktor fuer Lager, der Array mit uebergebener Groesse initialisiert
+     * und <code>lagerGroesse</code> sowie <code>lagerBestand</code> initialisiert.
+     * 
+     * @param lagerGroesse Der Wert fuer die laenge des Arrays und fue <code>lagerGroesse</code>
+     */
     public Lager(int lagerGroesse){
         if(lagerGroesse < 1){
             throw new IllegalArgumentException(ERROR_LAGERGROESSE_MEHR);
@@ -30,10 +37,22 @@ public class Lager{
         this.lagerBestand = 0;
     }
     
+    /**
+     * Standardkonstruktor, der den Ersten mit dem Uebergabeparameter 10 aufruft.
+     */
     public Lager(){
         this(10);
     }
     
+    /**
+     * Speichert die Referenz eines Artikels in das Lager Array ein.
+     * 
+     * @param artikel Der Artikel der in das Array gespeichert wird.
+     * 
+     * @throws IllegalArgumentException Wenn kein Objekt uebergeben wurde.
+     * @throws IllegalArgumentException Wenn Array bereits voll ist.
+     * @throws IllegalArgumentException Wenn Artikelnummer bereits vergeben ist.
+     */
     public void legeAnArtikel(Artikel artikel){
         if(artikel == null){
             throw new IllegalArgumentException(ERROR_KEIN_OBJEKT);
@@ -50,6 +69,14 @@ public class Lager{
         
     }
     
+    /**
+     * Loescht die Referenz eines Artikels aus dem Array.
+     * 
+     * @param artikelNr Die Artikelnummer des zu loeschenden Artikels.
+     * 
+     * @throws IllegalArgumentException Wenn zu Artikelnummer gehoerender Artikel
+     * in Array gefunden wurde.
+     */
     public void entferneArtikel(int artikelNr){
         
         int index = getIndexArtikel(artikelNr);
@@ -65,18 +92,36 @@ public class Lager{
         throw new IllegalArgumentException(ERROR_ARTIKEL_NICHT_GEFUNDEN);
     }
     
+    /**
+     * Ruft die bucheZugang Methode auf einen Artikel aus dem Lager auf.
+     * 
+     * @param artikelNr Artikelnummer des Artikels auf den gebucht werden soll.
+     * @param zugang Menge die dazugebucht werden soll.
+     */
     public void bucheZugang(int artikelNr, int zugang){
         int index = getIndexArtikel(artikelNr);
         
         getArtikel(index).bucheZugang(zugang);
     }
     
+    /**
+     * Ruft die bucheAbgang Methode auf einen Artikel aus dem Lager auf.
+     * 
+     * @param artikelNr Artikelnummer des Artikels auf den gebucht werden soll.
+     * @param zugang Menge die abgebucht werden soll.
+     */
     public void bucheAbgang(int artikelNr, int abgang){
         int index = getIndexArtikel(artikelNr);
         
         getArtikel(index).bucheAbgang(abgang);
     }
     
+    /**
+     * Aendert den Preis eines Artikels aus dem Lager um einen Prozentsatz.
+     * 
+     * @param artikelNr Artikelnummer des Artikels, bei dem der Preis geandert wird.
+     * @param prozent Der Prozentsatz um den der Preis geeandert wird.
+     */
     public void aenderePreisEinesArtikels(int artikelNr, double prozent){
         int index = getIndexArtikel(artikelNr);
         Artikel tmp = getArtikel(index);
@@ -84,12 +129,28 @@ public class Lager{
         tmp.setPreis(tmp.getPreis() * (1.0 + prozent / 100));
     }
     
+    /**
+     * Aendert den Preis aller Artikel aus dem Lager um einen Prozentsatz.
+     * 
+     * @param prozent Der Prozentsatz um den der Preis geeandert wird.
+     */
     public void aenderePreisAllerArtikel(double prozent){
         for(Artikel tmp: lagerFeld){
-            tmp.setPreis(tmp.getPreis() * (1.0 + prozent / 100));
+            if(tmp != null){
+                tmp.setPreis(tmp.getPreis() * (1.0 + prozent / 100));
+            }
         }
     }
     
+    /**
+     * Gibt einen Artikel an einem uebergebenen Index aus dem Feld zurueck.
+     * 
+     * @param index Stelle im Array die zurueckgegeben werden soll.
+     * 
+     * @return Gewuenschter Artikel.
+     * 
+     * @throws IllegalArgumentException Wenn Index ausserhalb des Bereichs vom Array ist.
+     */
     public Artikel getArtikel(int index){
         if(index < 0 || index > lagerGroesse - 1){
             throw new IllegalArgumentException(ERROR_INDEX_FALSCH + String.valueOf(lagerGroesse - 1));
@@ -119,6 +180,13 @@ public class Lager{
                 + String.valueOf(lagerBestand) + lager;
     }
     
+    /**
+     * Prueft ob Artikel im Lager ist.
+     * 
+     * @param artikelNr Artikelnummer nach der im Array gesucht wird.
+     * 
+     * @return true wenn Artikel gefunden, false wenn Artikel nicht gefunden.
+     */
     public boolean istArtikelGelagert(int artikelNr){
         for(int i = 0; i < lagerBestand; i++){
             if(lagerFeld[i].getArtikelNr() == artikelNr){
@@ -129,6 +197,16 @@ public class Lager{
         return false;
     }
     
+    /**
+     * Sucht an welchem Index ein Artikel steht.
+     * 
+     * @param artikelNr Artikelnummer des Artikels der gesucht werden soll.
+     * 
+     * @return Index des Artikels, wenn er gefunden wurde.
+     * 
+     * @throws IllegalArgumentException Wenn Artikel nicht gefunden wurde.
+     * Es wird kein Index zurueckgegeben.
+     */
     public int getIndexArtikel(int artikelNr){
         int index;
         for(int i = 0; i < lagerBestand; i++){

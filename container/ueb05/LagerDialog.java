@@ -5,8 +5,9 @@ import java.util.Scanner;
 /**
  * 
  * @author Tim Mueller / Yannick Gross
- * @version 12.11.2022 / 23:14
+ * @version 03.12.2022 / 21:10
  */
+
 public class LagerDialog{
     //Fehlermeldung
     private static final String ERROR_OPTION_NICHT_GEFUNDEN ="Option wurde nicht gefunden\n";
@@ -43,8 +44,8 @@ public class LagerDialog{
      * um sie dann auszuwerten und die passende Methode auf das Lager
      * Objekt anzuwenden.
      * 
-     * @throws IllegalArgumentException Wenn eine Eingabe ohne Zeichen getaetigt wurde.
-     * @throws IllegalArgumentException Wenn eine falsche Eingabe getaetigt wurde.
+     * @throws IllegalArgumentException Wenn Eingabe keine auswaehlbare Option ist.
+     * @throws IllegalArgumentException Default bei switch-case.
      */
     public void optionAuswahl(){
         byte input = ArtikelDialog.leseByte("\nVerfuegbare Kommandos:\n" +
@@ -133,10 +134,10 @@ public class LagerDialog{
      * Wird aufgerufen wenn <code>lager</code> auf <code>null</code>
      * zeigt oder wenn User das Objekt Ueberschreiben will.
      * 
-     * @throws IllegalArgumentException Wenn etwas anderes als Ja oder Nein eingegeben wurde.
+     * @throws IllegalArgumentException Wenn etwas anderes als 1 oder 2 eingegeben wurde.
      */
     public Lager erstelleLager(){
-        byte konstruktorWahl = ArtikelDialog.leseByte("Möchtest du eine Lagergroesse vorgeben? (Bei Nein: Groesse = 10) (1:Ja / 2:Nein)\nEingabe:");
+        byte konstruktorWahl = ArtikelDialog.leseByte("Moechtest du eine Lagergroesse vorgeben? (Bei Nein: Groesse = 10) (1:Ja / 2:Nein)\nEingabe:");
         
         if(konstruktorWahl < 1 || konstruktorWahl > 2){
             throw new IllegalArgumentException(ERROR_OPTION_NUMMER + "2\n");

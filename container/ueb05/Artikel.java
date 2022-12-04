@@ -2,8 +2,9 @@ package container.ueb05;
 /**
  * 
  * @author Tim Mueller / Yannick Gross
- * @version 12.11.2022 / 23:14
+ * @version 03.12.2022 / 21:10
  */
+
 public class Artikel{
    //Fehlermeldungen
    private static final String ERROR_ARTIKELNUMMER_VIERSTELLIG =    "Die Artikelnummer muss vierstellig und positiv sein";
@@ -74,7 +75,7 @@ public class Artikel{
     */
    
    /**
-    * Erhoeht den Bestand um die übergebene Menge.
+    * Erhoeht den Bestand um die Uebergebene Menge.
     * 
     * @param menge Betrag um den Bestand erhoeht wird.
     * 

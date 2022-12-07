@@ -16,10 +16,13 @@ public class Lager{
     private static final String ERROR_ARTIKEL_NICHT_GEFUNDEN = "Der gewuenschte Artikel wurde nicht im Lager gefunden.\n";
     private static final String ERROR_INDEX_FALSCH =           "Der angegebene Index ist falsch. Er muss liegen, zwischen 0 und ";
     private static final String ERROR_ARTIKEL_EXISTIERT =      "Die eingegebene Artikelnummer existiert bereits.\n";
+    //Konstanten
+    private static final int MAX_LAGER = 10;
     //Attribute
     private Artikel[] lagerFeld;
     private final int lagerGroesse;
     private int lagerBestand;
+    
     
     /**
      * Konstruktor fuer Lager, der Array mit uebergebener Groesse initialisiert
@@ -41,7 +44,7 @@ public class Lager{
      * Standardkonstruktor, der den Ersten mit dem Uebergabeparameter 10 aufruft.
      */
     public Lager(){
-        this(10);
+        this(MAX_LAGER);
     }
     
     /**

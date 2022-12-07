@@ -43,7 +43,7 @@ public class Artikel{
        }
        
        this.artikelNr = artikelNr;
-       setArt(art);
+       setArt(art.strip());
        setBestand(bestand);
        setPreis(preis);
    }

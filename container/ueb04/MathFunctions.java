@@ -9,14 +9,14 @@ import java.lang.Math;
  * @version 28.11.2022 / 19:00Uhr
  */
 public class MathFunctions{
-    public static final String ERROR_KEINE_ISBN = "Eingegebene Zahl keine ISBN\n";
-    public static final String ERROR_GROESSER_NULL = "Eingegebene Zahl muss groesser 0 sein\n";
-    public static final String ERROR_NICHT_NEGATIV_SEIN = "Eingegebene Zahl darf nicht negativ sein\n";
-    public static final String ERROR_NICHT_NULL = "Eingegebene Zahl darf nich 0 sein";
-    public static final String ERROR_EINGABE_ZU_GROSS = "Eingegebene Zahl zu gross zur Berechnung.\n";
-    private static final double ERROR = 0.00001;
-    private static final int ISBN_MIN = 100000000;
-    private static final int ISBN_MAX = 1000000000;
+    public  static final String ERROR_KEINE_ISBN =           "Eingegebene ISBN muss 9-stellig und positiv sein\n";
+    public  static final String ERROR_GROESSER_NULL =        "Eingegebene Zahl muss groesser 0 sein\n";
+    public  static final String ERROR_NICHT_NEGATIV_SEIN =   "Eingegebene Zahl muss positiv sein\n";
+    public  static final String ERROR_NICHT_NULL =           "Eingegebene Zahl darf nicht 0 sein";
+    public  static final String ERROR_EINGABE_ZU_GROSS =     "Eingegebene Zahl zu gross zur Berechnung.\n";
+    private static final double ERROR =                      0.00001;
+    private static final long ISBN_MIN =                     100000000;
+    private static final long ISBN_MAX =                     999999999;
     
     /**
      * Verhindert die Erstellung eines Objekts.
@@ -27,7 +27,7 @@ public class MathFunctions{
     /**
      * Findet Teiler von Zahl heraus und berechnet deren Summe.
      * 
-     * @param zahl Zahl von der die Teilersumme berechnet wird.
+     * @param zahl Natürliche Zahl von der die Teilersumme berechnet wird.
      * 
      * @return Teilersumme der uebergebenen Zahl.
      * 
@@ -39,15 +39,18 @@ public class MathFunctions{
         if(zahl <= 0){
             throw new IllegalArgumentException(ERROR_GROESSER_NULL);
         }
-        for(long i = 1; i * i <= zahl; i++){
-            if(i * i == zahl){
-                teilerSumme += i;
-                break;
-            }
+        
+        long i;
+        for(i = 1; i * i <= zahl; i++){
             if(zahl % i == 0){
                 teilerSumme += i + zahl / i;
             }
         }
+        
+        if(i * i == zahl){
+            teilerSumme += i;
+        }    
+            
         return teilerSumme;
     }
 
@@ -64,10 +67,7 @@ public class MathFunctions{
     public static String berechneChecksummeIsbn(long isbn){
         long pruefziffer = 0;
         
-        if(isbn < 0){
-            throw new IllegalArgumentException(ERROR_NICHT_NEGATIV_SEIN);
-        }
-        if(isbn / ISBN_MIN == 0 || isbn / ISBN_MAX > 0){
+        if(isbn < ISBN_MIN || isbn > ISBN_MAX || isbn < 0){
             throw new IllegalArgumentException(ERROR_KEINE_ISBN);
         }
         
@@ -96,16 +96,18 @@ public class MathFunctions{
      * @return Art der Nullstellen und die dazugehoerigen Nullstellen.
      */
     public static String berechneNullstellen(double p, double q){
-        double diskriminante = (p/2) * (p/2) - q;
-        double ersteNullstelle = -(p/2) + Math.sqrt(diskriminante);
-        double zweiteNullstelle = -(p/2) - Math.sqrt(diskriminante);
+        double pHalbe = p/2;
+        double diskriminante = pHalbe * pHalbe - q;
+        double wurzelAusDiskriminante = Math.sqrt(diskriminante);
+        double ersteNullstelle = -pHalbe + wurzelAusDiskriminante;
+        double zweiteNullstelle = -pHalbe - wurzelAusDiskriminante;
         
         
         if(diskriminante >= ERROR){
             return "Zwei Nullstellen: " + ersteNullstelle + " | " + zweiteNullstelle;
         }
         
-        else if(diskriminante <= ERROR){
+        else if(diskriminante <= -ERROR){
             return "Komplexe Nullstellen";
         }
         
@@ -115,7 +117,7 @@ public class MathFunctions{
     /**
      * Ueberprueft ob Zahl als a^4+b^3+c^2 dargestellt werden kann.
      * 
-     * @param zahl Zahl fuer die geprueft werden soll.
+     * @param zahl Zahl fuer die geprueft werden soll, muss groesser 3 sein.
      *
      * @return Wahrheitswert, ob Zahl mit gegebener Formel dargestellt werden kann.
      *
@@ -128,13 +130,15 @@ public class MathFunctions{
         if(zahl < 3){
             return false;
         }
-        
+        double aHochVier;
+        double bHochDrei;
+        double c;
         for(int a = 1; a <= Math.pow(zahl,1.0/4.0); a++){
-            double aHochVier = a * a * a * a;
+            aHochVier = a * a * a * a;
             
             for(int b = 1; b <= Math.cbrt(zahl); b++){
-                double bHochDrei = b * b * b;
-                double c = zahl - aHochVier - bHochDrei;
+                bHochDrei = b * b * b;
+                c = zahl - aHochVier - bHochDrei;
                 
                 if(Math.sqrt(c) % 1 == 0 && c != 0){
 
@@ -219,9 +223,14 @@ public class MathFunctions{
         if(x == 0){
             throw new IllegalArgumentException(ERROR_NICHT_NULL);    
         }
-        double reihenSumme = 0;
-        for(int i = 1; i <= anzahl; i++){ 
-            reihenSumme += Math.pow((x - 1),i) / (i * Math.pow(x,i));  
+        
+        double zaehler = x-1.0;
+        double nenner = x;
+        double reihenSumme = zaehler / nenner;
+        for(int i = 2; i <= anzahl; i++){ 
+            zaehler *= (x-1.0);
+            nenner = (nenner / (i-1.0)) * x;
+            reihenSumme += zaehler / nenner;
         }
         
         if(Double.isNaN(reihenSumme)){

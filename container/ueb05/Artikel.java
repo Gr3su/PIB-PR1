@@ -2,15 +2,17 @@ package container.ueb05;
 /**
  * 
  * @author Tim Mueller / Yannick Gross
- * @version 12.11.2022 / 23:14
+ * @version 03.12.2022 / 21:10
  */
+
 public class Artikel{
    //Fehlermeldungen
-   private static final String ERROR_ARTIKELNUMMER_VIERSTELLIG =    "Die Artikelnummer muss vierstellig und positiv sein";
-   private static final String ERROR_ARTIKELART_ZEICHENKETTE =      "Die Artikelart muss eine Zeichenkette sein";
-   private static final String ERROR_BESTAND_POSITIV =              "Der Bestand muss positiv sein";
-   private static final String ERROR_BUCHUNG_POSITIV =              "Die Buchungsmenge muss positiv sein";
-   private static final String ERROR_PREIS_POSITIV =                "Der Preis muss positiv sein";
+   private static final String ERROR_ARTIKELNUMMER_VIERSTELLIG =    "Die Artikelnummer muss vierstellig und positiv sein\n";
+   private static final String ERROR_ARTIKELART_ZEICHENKETTE =      "Die Artikelart muss eine Zeichenkette sein\n";
+   private static final String ERROR_BESTAND_POSITIV =              "Der Bestand muss positiv sein\n";
+   private static final String ERROR_BUCHUNG_POSITIV =              "Die Buchungsmenge muss positiv sein\n";
+   private static final String ERROR_PREIS_POSITIV =                "Der Preis muss positiv sein\n";
+   private static final String ERROR_ZU_VIEL_ABGEZOGEN =            "Der Preis kann maximal um 100% reduziert werden\n";
    private static final int ARTIKELNR_OBERGRENZE =                  9999;
    private static final int ARTIKELNR_UNTERGRENZE =                 999;
    
@@ -41,7 +43,7 @@ public class Artikel{
        }
        
        this.artikelNr = artikelNr;
-       setArt(art);
+       setArt(art.strip());
        setBestand(bestand);
        setPreis(preis);
    }
@@ -74,7 +76,7 @@ public class Artikel{
     */
    
    /**
-    * Erhoeht den Bestand um die übergebene Menge.
+    * Erhoeht den Bestand um die Uebergebene Menge.
     * 
     * @param menge Betrag um den Bestand erhoeht wird.
     * 
@@ -104,6 +106,14 @@ public class Artikel{
            throw new IllegalArgumentException(ERROR_BESTAND_POSITIV); 
        }
        bestand -= menge;
+   }
+   
+   public void aenderePreis(double prozent){
+       if(prozent < -100.0){
+           throw new IllegalArgumentException(ERROR_ZU_VIEL_ABGEZOGEN);
+       }
+       
+       this.preis *= (1.0 + prozent / 100);
    }
 
    /**
@@ -192,7 +202,7 @@ public class Artikel{
     */
    @Override
    public String toString(){
-       return("Artikelnummer: " + artikelNr + "; Artikelart " + art + "; Bestand "
-       + bestand);
+       return("Artikelnummer: " + artikelNr + "; Artikelart: " + art + "; Preis: " + preis +
+       "; Bestand: " + bestand);
    }
    }

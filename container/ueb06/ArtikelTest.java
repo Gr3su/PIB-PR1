@@ -10,8 +10,8 @@ import org.junit.jupiter.api.Test;
 /**
  * Die Test-Klasse ArtikelTest.
  *
- * @author  (Ihr Name)
- * @version (eine Versionsnummer oder ein Datum)
+ * @author  Yannick Gross / Tim Mueller
+ * @version 11.12.2022 / 00:35Uhr
  */
 public class ArtikelTest{
     
@@ -123,11 +123,11 @@ public class ArtikelTest{
     }
     
     @Test
-    public void testAenderePreis_mit_50_erwartet_halberPreis(){
+    public void testAenderePreis_mit_Negativ50_erwartet_halberPreis(){
         Artikel artikel = new Artikel(1000,"auto",10.0);
         final double erwarteterPreis = 5.0;
         
-        artikel.aenderePreis(50.0);
+        artikel.aenderePreis(-50.0);
         
         assertEquals(erwarteterPreis, artikel.getPreis());
     }
@@ -135,9 +135,9 @@ public class ArtikelTest{
     @Test
     public void testAenderePreis_mit_0_erwartet_gleicherPreis(){
         Artikel artikel = new Artikel(1000,"auto",10.0);
-        final double erwarteterPreis = 5.0;
+        final double erwarteterPreis = 10.0;
         
-        artikel.aenderePreis(50.0);
+        artikel.aenderePreis(0.0);
         
         assertEquals(erwarteterPreis, artikel.getPreis());
     }

@@ -12,9 +12,9 @@ public class CD extends Artikel{
     private int     anzahlTitel;
     
     //Error-Messages
-    private static final String ERROR_INTERPRET_LEER             = "Der Interpret muss mindestens ein Zeichen enthalten.\n";
-    private static final String ERROR_TITEL_LEER                 = "Der Titel muss mindestens ein Zeichen enthalten.\n";
-    private static final String ERROR_ANZAHLTITEL_KLEINER_EINS   = "Die Anzahl der Titel muss eine natürliche Zahl sein.\n";
+    private static final String ERROR_INTERPRET_LEER             = "#ERR# Der Interpret muss mindestens ein Zeichen enthalten.\n";
+    private static final String ERROR_TITEL_LEER                 = "#ERR# Der Titel muss mindestens ein Zeichen enthalten.\n";
+    private static final String ERROR_ANZAHLTITEL_KLEINER_EINS   = "#ERR# Die Anzahl der Titel muss eine natürliche Zahl sein.\n";
     
     //Konstanten
     private static final String ARTIKELART = "Medien";
@@ -36,6 +36,14 @@ public class CD extends Artikel{
         this.titel = titel.strip();
         this.anzahlTitel = anzahlTitel;
         
+    }
+    
+    public CD(int artikelNr, double preis, String interpret, String titel, int anzahlTitel){
+        this(artikelNr, 0, preis, interpret, titel, anzahlTitel);
+    }
+    
+    public CD(int artikelNr, String interpret, String titel, int anzahlTitel){
+        this(artikelNr, 0, 0.0, interpret, titel, anzahlTitel);
     }
     
     public String getInterpret(){
@@ -71,5 +79,10 @@ public class CD extends Artikel{
                 }
         }
         return false;
+    }
+    
+    @Override
+    public String toString(){
+        return super.toString() + "; Interpret: " + interpret + "; Titel: " + titel + "; Anzahl Titel: " + anzahlTitel;
     }
 }

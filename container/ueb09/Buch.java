@@ -12,9 +12,9 @@ public class Buch extends Artikel{
     private String verlag;
     
     //Error-Messages
-    private static final String ERROR_TITEL_LEER    = "Der Titel muss mindestens aus einem Zeichen bestehen.\n";
-    private static final String ERROR_AUTOR_LEER    = "Der Autor muss mindestens aus einem Zeichen bestehen.\n";
-    private static final String ERROR_VERLAG_LEER   = "Der Verlag muss mindestens aus einem Zeichen bestehen.\n";
+    private static final String ERROR_TITEL_LEER    = "#ERR# Der Titel muss mindestens aus einem Zeichen bestehen.\n";
+    private static final String ERROR_AUTOR_LEER    = "#ERR# Der Autor muss mindestens aus einem Zeichen bestehen.\n";
+    private static final String ERROR_VERLAG_LEER   = "#ERR# Der Verlag muss mindestens aus einem Zeichen bestehen.\n";
     
     //Konstanten
     private static final String ARTIKELART = "Medien";
@@ -37,9 +37,12 @@ public class Buch extends Artikel{
         this.verlag = verlag.strip();
     }
     
-    @Override
-    public String getBeschreibung(){
-        return autor + " : " + titel;
+    public Buch(int artikelNr,double preis, String titel, String autor, String verlag){
+        this(artikelNr, 0, preis, titel, autor, verlag);
+    }
+    
+    public Buch(int artikelNr,String titel, String autor, String verlag){
+        this(artikelNr, 0, 0.0, titel, autor, verlag);
     }
     
     public String getTitel(){
@@ -52,6 +55,11 @@ public class Buch extends Artikel{
     
     public String getVelrag(){
         return verlag;
+    }
+    
+    @Override
+    public String getBeschreibung(){
+        return autor + " : " + titel;
     }
     
     @Override
@@ -73,4 +81,8 @@ public class Buch extends Artikel{
         return false;
     }
     
+    @Override
+    public String toString(){
+        return super.toString() + "; Titel: " + titel + "; Autor: " + autor + "; Verlag: " + verlag;
+    }
 }

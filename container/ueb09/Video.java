@@ -12,9 +12,9 @@ public class Video extends Artikel{
     private int     jahr;
     
     //Error-Messages
-    private static final String ERROR_TITEL_LEER                        = "Der Titel muss mindestens ein Zeichen enthalten.\n";
-    private static final String ERROR_SPIELDAUER_KLEINER_EINS           = "Die Spieldauer muss groesser 0 sein.\n";
-    private static final String ERROR_ERSCHEINUNGSJAHR_NICHT_MOEGLICH   = "Das Erscheinungsjahr muss zwischen 1899 und 2023 liegen.\n";
+    private static final String ERROR_TITEL_LEER                        = "#ERR# Der Titel muss mindestens ein Zeichen enthalten.\n";
+    private static final String ERROR_SPIELDAUER_KLEINER_EINS           = "#ERR# Die Spieldauer muss groesser 0 sein.\n";
+    private static final String ERROR_ERSCHEINUNGSJAHR_NICHT_MOEGLICH   = "#ERR# Das Erscheinungsjahr muss zwischen 1899 und 2023 liegen.\n";
     
     //Konstanten
     private static final String ARTIKELART = "Medien";
@@ -35,6 +35,14 @@ public class Video extends Artikel{
         this.titel = titel.strip();
         this.spieldauer = spieldauer;
         this.jahr = jahr;
+    }
+    
+    public Video(int artikelNr,double preis, String titel, int spieldauer, int jahr){
+        this(artikelNr, 0, preis, titel, spieldauer, jahr);
+    }
+    
+    public Video(int artikelNr, String titel, int spieldauer, int jahr){
+        this(artikelNr, 0, 0.0, titel, spieldauer, jahr);
     }
     
     public String getTitel(){
@@ -72,5 +80,10 @@ public class Video extends Artikel{
                 }
         }
         return false;
+    }
+    
+    @Override
+    public String toString(){
+        return super.toString() + "; Titel: " + titel + "; Spieldauer: " + spieldauer + "; Erscheinungsjahr: " + jahr;
     }
 }

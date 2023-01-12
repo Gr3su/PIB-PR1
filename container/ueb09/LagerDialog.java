@@ -13,17 +13,19 @@ public class LagerDialog{
     private static boolean killProgram  = false;
     
     //Error-Messages
-    private static final String ERROR_OPTION_NICHT_GEFUNDEN     = "Option wurde nicht gefunden\n";
-    private static final String ERROR_OPTION_NUMMER             = "Es koennen nur folgende Option-Nummern angenommen werden: 1-";
-    private static final String ERROR_INDEX_NICHT_BELEGT        = "Gewuenschter Index ist nicht belegt.\n";
-    private static final String ERROR_FALSCHER_DATENTYP         = "Falscher Datentyp wurde eingegeben.\n";
+    private static final String ERROR_OPTION_NICHT_GEFUNDEN     = "#ERR# Option wurde nicht gefunden\n";
+    private static final String ERROR_OPTION_NUMMER             = "#ERR# Es koennen nur folgende Option-Nummern angenommen werden: 1-";
+    private static final String ERROR_INDEX_NICHT_BELEGT        = "#ERR# Gewuenschter Index ist nicht belegt.\n";
+    private static final String ERROR_FALSCHER_DATENTYP         = "#ERR# Falscher Datentyp wurde eingegeben.\n";
+    
+    private LagerDialog(){}
     
     /**
      * Methode in der das Hauptprogramm laeuft.
      * While Schleife laeuft so lange, bis User Programm stoppen moechte,
      * also bis <code>killProgram</code> auf true gesetzt wird.
      */
-    private void start(){
+    private final void start(){
         while(killProgram == false){
             try{
                 
@@ -47,7 +49,7 @@ public class LagerDialog{
      * @throws IllegalArgumentException Wenn Eingabe keine auswaehlbare Option ist.
      * @throws IllegalArgumentException Default bei switch-case.
      */
-    private void optionAuswahl(){
+    private final void optionAuswahl(){
         byte input = leseByte("\nVerfuegbare Kommandos:\n" +
                                 "1  - Lager erstellen\n" +
                                 "2  - Artikel anlegen\n"+
@@ -58,13 +60,14 @@ public class LagerDialog{
                                 "7  - Preis von ALLEN Artikeln aendern\n" +
                                 "8  - Preis von EINEM Artikel neu setzen\n" +
                                 "9  - Gibt in einem String das komplette Lager zurueck\n" +
-                                "10 - Dialog beenden\n" +
+                                "10 - Bestandsliste ausgeben\n" +
+                                "11 - Dialog beenden\n" +
                                 "Eingabe: ");
-        if(input < 1 || input > 10){
+        if(input < 1 || input > 11){
             throw new IllegalArgumentException(ERROR_OPTION_NUMMER + "10\n");
         }
                                     
-        if(lager == null && input > 1 && input < 10){
+        if(lager == null && input > 1 && input < 11){
             System.out.println("Lager wurde noch nicht initialisiert. Objekt initialisierung wird gestartet.");
             input = 1;
         }
@@ -120,6 +123,10 @@ public class LagerDialog{
                 break;
             
             case 10:
+                System.out.println(lager.ausgebenBestandsListe());
+                break;
+                
+            case 11:
                 killProgram = true;
                 break;
                 
@@ -136,7 +143,7 @@ public class LagerDialog{
      * 
      * @throws IllegalArgumentException Wenn etwas anderes als 1 oder 2 eingegeben wurde.
      */
-    public Lager erstelleLager(){
+    private final Lager erstelleLager(){
         byte konstruktorWahl = leseByte("Moechtest du eine Lagergroesse vorgeben? (Bei Nein: Groesse = 10) (1:Ja / 2:Nein)\nEingabe:");
         
         if(konstruktorWahl < 1 || konstruktorWahl > 2){
@@ -159,7 +166,7 @@ public class LagerDialog{
      * 
      * @throws IllegalArgumentException Wenn etwas anderes als Ja oder Nein eingegeben wurde.
      */
-    public static Artikel erstelleArtikel(){
+    private final static Artikel erstelleArtikel(){
         byte artikelWahl = leseByte("Welchen Artikel moechtest du erstellen:\n" +
                                         "1 - CD\n" +
                                         "2 - Buch\n" +
@@ -171,20 +178,20 @@ public class LagerDialog{
         }
         
         if(artikelWahl == 1){
-            
+            return erstelleCD();
         }
         if(artikelWahl == 2){
-            
+            return erstelleBuch();
         }
         if(artikelWahl == 3){
-            
+            return erstelleVideo();
         }
         
         return erstelleAllgemeinenArtikel();
     }
     
     private static Artikel erstelleAllgemeinenArtikel(){
-        byte konstruktorWahl = leseByte("Welcher Artikel soll aufgerufen werden:\n" +
+        byte konstruktorWahl = leseByte("Welcher Konstruktor soll aufgerufen werden:\n" +
                                         "1 - Hauptkonstruktor\n" +
                                         "2 - ohne Bestand\n" +
                                         "3 - ohne Bestand und Preis");               
@@ -208,6 +215,87 @@ public class LagerDialog{
         return new Artikel(artikelNr, art);
     }
     
+    private static CD erstelleCD(){
+        byte konstruktorWahl = leseByte("Welcher Konstruktor soll aufgerufen werden:\n" +
+                                        "1 - Hauptkonstruktor\n" +
+                                        "2 - ohne Bestand\n" +
+                                        "3 - ohne Bestand und Preis");
+                                        
+        int artikelNr = leseInt("Die Artikelnummer: ");
+        String interpret = leseString("Der Interpret: ");
+        String titel = leseString("Der Titel: ");
+        int anzahlTitel = leseInt("Anzahl der Titel auf der CD: ");
+        
+        if(konstruktorWahl == 1){
+            int bestand = leseInt("Der Bestand: ");
+            double preis = leseDouble("Der Preis: ");
+            
+            return new CD(artikelNr, bestand, preis, interpret, titel, anzahlTitel);
+        }
+        
+        if(konstruktorWahl == 2){
+            double preis = leseDouble("Der Preis: ");
+            
+            return new CD(artikelNr, preis, interpret, titel, anzahlTitel);
+        }
+        
+        return new CD(artikelNr, interpret, titel, anzahlTitel);
+    }
+    
+    private static Video erstelleVideo(){
+        byte konstruktorWahl = leseByte("Welcher Konstruktor soll aufgerufen werden:\n" +
+                                        "1 - Hauptkonstruktor\n" +
+                                        "2 - ohne Bestand\n" +
+                                        "3 - ohne Bestand und Preis");
+                                        
+        int artikelNr = leseInt("Die Artikelnummer: ");
+        String titel = leseString("Der Titel: ");
+        int spieldauer = leseInt("Die Spieldauer: ");
+        int jahr = leseInt("Das Erscheinungsjahr: ");
+        
+        if(konstruktorWahl == 1){
+            int bestand = leseInt("Der Bestand: ");
+            double preis = leseDouble("Der Preis: ");
+            
+            return new Video(artikelNr, bestand, preis, titel, spieldauer, jahr);
+        }
+        
+        if(konstruktorWahl == 2){
+            double preis = leseDouble("Der Preis: ");
+            
+            return new Video(artikelNr, preis, titel, spieldauer, jahr);
+        }
+        
+        return new Video(artikelNr, titel, spieldauer, jahr);
+    }
+    
+    private static Buch erstelleBuch(){
+        byte konstruktorWahl = leseByte("Welcher Konstruktor soll aufgerufen werden:\n" +
+                                        "1 - Hauptkonstruktor\n" +
+                                        "2 - ohne Bestand\n" +
+                                        "3 - ohne Bestand und Preis");
+                                        
+        int artikelNr = leseInt("Die Artikelnummer: ");
+        String titel = leseString("Der Titel: ");
+        String autor = leseString("Der Autor: ");
+        String verlag = leseString("Der Verlag: ");
+        
+        if(konstruktorWahl == 1){
+            int bestand = leseInt("Der Bestand: ");
+            double preis = leseDouble("Der Preis: ");
+            
+            return new Buch(artikelNr, bestand, preis, titel, autor, verlag);
+        }
+        
+        if(konstruktorWahl == 2){
+            double preis = leseDouble("Der Preis: ");
+            
+            return new Buch(artikelNr, preis, titel, autor, verlag);
+        }
+        
+        return new Buch(artikelNr, titel, autor, verlag);
+    }
+    
     /**
      * Methode um uebergebenen Text auszugeben und String einzulesen.
      * 
@@ -215,7 +303,7 @@ public class LagerDialog{
      * 
      * @return Eingabe von User.
      */
-    public static String leseString(String prompt){
+    private final static String leseString(String prompt){
         System.out.println(prompt);
         
         return scanner.nextLine();
@@ -228,7 +316,7 @@ public class LagerDialog{
      * 
      * @return Eingabe von User.
      */
-    public static byte leseByte(String prompt){
+    private final static byte leseByte(String prompt){
         System.out.println(prompt);
         while(!scanner.hasNextByte()){
             scanner.next();
@@ -249,7 +337,7 @@ public class LagerDialog{
      * 
      * @return Eingabe von User.
      */
-    public static int leseInt(String prompt){
+    private final static int leseInt(String prompt){
         System.out.println(prompt);
         while(!scanner.hasNextInt()){
             scanner.next();
@@ -270,7 +358,7 @@ public class LagerDialog{
      * 
      * @return Eingabe von User.
      */
-    public static double leseDouble(String prompt){
+    private final static double leseDouble(String prompt){
         System.out.println(prompt);
         while(!scanner.hasNextDouble()){
             scanner.next();

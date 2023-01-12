@@ -1,5 +1,4 @@
-package container.ueb09; 
-
+ 
 /**
  * 
  * @author Tim Mueller / Yannick Gross
@@ -8,12 +7,12 @@ package container.ueb09;
 
 public class Artikel{
    //Fehlermeldungen
-   private static final String ERROR_ARTIKELNUMMER_VIERSTELLIG =    "Die Artikelnummer muss vierstellig und positiv sein\n";
-   private static final String ERROR_ARTIKELART_ZEICHENKETTE =      "Die Artikelart muss eine Zeichenkette sein\n";
-   private static final String ERROR_BESTAND_POSITIV =              "Der Bestand muss positiv sein\n";
-   private static final String ERROR_BUCHUNG_POSITIV =              "Die Buchungsmenge muss positiv sein\n";
-   private static final String ERROR_PREIS_POSITIV =                "Der Preis muss positiv sein\n";
-   private static final String ERROR_ZU_VIEL_ABGEZOGEN =            "Der Preis kann maximal um 100% reduziert werden\n";
+   private static final String ERROR_ARTIKELNUMMER_VIERSTELLIG =    "#ERR# Die Artikelnummer muss vierstellig und positiv sein\n";
+   private static final String ERROR_ARTIKELART_ZEICHENKETTE =      "#ERR# Die Artikelart muss eine Zeichenkette sein\n";
+   private static final String ERROR_BESTAND_POSITIV =              "#ERR# Der Bestand muss positiv sein\n";
+   private static final String ERROR_BUCHUNG_POSITIV =              "#ERR# Die Buchungsmenge muss positiv sein\n";
+   private static final String ERROR_PREIS_POSITIV =                "#ERR# Der Preis muss positiv sein\n";
+   private static final String ERROR_ZU_VIEL_ABGEZOGEN =            "#ERR# Der Preis kann maximal um 100% reduziert werden\n";
    private static final int ARTIKELNR_OBERGRENZE =                  9999;
    private static final int ARTIKELNR_UNTERGRENZE =                 999;
    

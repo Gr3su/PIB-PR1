@@ -7,12 +7,12 @@
 
 public class Lager{
     //Fehlermeldungen
-    private static final String ERROR_LAGERGROESSE_MEHR =      "Die Groesse des Lagers muss mindestens 1 betragen.\n";
-    private static final String ERROR_KEIN_OBJEKT =            "Es wurde kein gueltiges Objekt angegeben.\n";
-    private static final String ERROR_LAGER_VOLL =             "Artikel konnte nicht angelegt werden, weil das Lager voll ist.\n";
-    private static final String ERROR_ARTIKEL_NICHT_GEFUNDEN = "Der gewuenschte Artikel wurde nicht im Lager gefunden.\n";
-    private static final String ERROR_INDEX_FALSCH =           "Der angegebene Index ist falsch. Er muss liegen, zwischen 0 und ";
-    private static final String ERROR_ARTIKEL_EXISTIERT =      "Die eingegebene Artikelnummer existiert bereits.\n";
+    private static final String ERROR_LAGERGROESSE_MEHR =      "#ERR# Die Groesse des Lagers muss mindestens 1 betragen.\n";
+    private static final String ERROR_KEIN_OBJEKT =            "#ERR# Es wurde kein gueltiges Objekt angegeben.\n";
+    private static final String ERROR_LAGER_VOLL =             "#ERR# Artikel konnte nicht angelegt werden, weil das Lager voll ist.\n";
+    private static final String ERROR_ARTIKEL_NICHT_GEFUNDEN = "#ERR# Der gewuenschte Artikel wurde nicht im Lager gefunden.\n";
+    private static final String ERROR_INDEX_FALSCH =           "#ERR# Der angegebene Index ist falsch. Er muss liegen, zwischen 0 und ";
+    private static final String ERROR_ARTIKEL_EXISTIERT =      "#ERR# Die eingegebene Artikelnummer existiert bereits.\n";
     //Konstanten
     private static final int MAX_LAGER = 10;
     //Attribute
@@ -137,6 +137,50 @@ public class Lager{
     }
     
     /**
+     * Gibt den Bestand des Lager in einem formatiertem String zurueck.
+     * Enthaelt Zeilenweise:
+     * artNr - getBeschreibung - preis - bestand - preis * bestand
+     * 
+     * @return formatierte Ausgabe von Bestand
+     */
+    public String ausgebenBestandsListe(){
+        double gesamtPreis = 0.0;
+        double artikelPreis;
+        int artikelNr;
+        int artikelBestand;
+        StringBuilder artikelBeschreibung = new StringBuilder("");
+        StringBuilder ausgabe = new StringBuilder();
+        
+        ausgabe.append("-----------------------------------------------------------------------------\n");
+        ausgabe.append(String.format("|%-5s %-40s %8s %-7s %9s  |\n", "ArtNr", "Beschreibung", "Preis",
+                                    "Bestand", "Gesamt"));
+        ausgabe = ausgabe.append("|---------------------------------------------------------------------------|\n");
+        for(Artikel artikel: lagerFeld){
+            if(artikel != null){
+                artikelPreis = artikel.getPreis();
+                artikelNr = artikel.getArtikelNr();
+                artikelBestand = artikel.getBestand();
+                artikelBeschreibung.delete(0, artikelBeschreibung.length());
+                artikelBeschreibung.append(artikel.getBeschreibung());
+                
+                ausgabe = ausgabe.append(String.format("|%-5d %-40.40s %8.2f %-7.7s %9.2f  |\n",
+                                                        artikelNr,
+                                                        artikelBeschreibung.toString(),
+                                                        artikelPreis,
+                                                        String.valueOf(artikelBestand),
+                                                        artikelPreis * artikelBestand));
+                                                        
+                gesamtPreis += artikelPreis * artikelBestand;
+            }
+        }
+        ausgabe = ausgabe.append("|---------------------------------------------------------------------------|\n");
+        ausgabe = ausgabe.append(String.format("|%-10s%62.2f  |\n","Gesamtwert:",gesamtPreis));
+        ausgabe = ausgabe.append("-----------------------------------------------------------------------------\n");
+        
+        return ausgabe.toString();
+    }
+    
+    /**
      * Gibt einen Artikel an einem uebergebenen Index aus dem Feld zurueck.
      * 
      * @param index Stelle im Array die zurueckgegeben werden soll.
@@ -166,7 +210,7 @@ public class Lager{
         String lager = ";\nLagerFeld:\n";
         for(Artikel tmp: lagerFeld){
             if(tmp != null){
-                lager += tmp + "\n";
+                lager += "Klasse: " + tmp.getClass().getSimpleName() + " : " + tmp + "\n";
             }
         }
         

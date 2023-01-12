@@ -6,3 +6,7 @@ Exercises of Programming 1
 1. [Übung 3](container/ueb03)
 1. [Übung 4](container/ueb04)
 1. [Übung 5](container/ueb05)
+2. [Übung 6](container/ueb06)
+3. [Übung 7](container/ueb07)
+4. [Übung 8](container/ueb08)
+5. 

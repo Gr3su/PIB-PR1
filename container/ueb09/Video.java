@@ -1,9 +1,9 @@
 
 /**
- * Beschreiben Sie hier die Klasse Video.
+ * Video Klasse die von Artikel erbt.
  * 
- * @author (Ihr Name) 
- * @version (eine Versionsnummer oder ein Datum)
+ * @author Tim Mueller / Yannick Gross
+ * @version 12.01.2023 / 20:00
  */
 public class Video extends Artikel{
     //Attribute
@@ -19,6 +19,20 @@ public class Video extends Artikel{
     //Konstanten
     private static final String ARTIKELART = "Medien";
     
+    /**
+    * Konstruktor fuer die Klasse Video mit allen Attributen.
+    * 
+    * @param artikelNr Artikelnummer des Videos.
+    * @param bestand Aktueller Bestand / Anzahl des Videos.
+    * @param preis Preis des Videos.
+    * @param titel Titel des Videos.
+    * @param spieldauer Spieldauer des Videos.
+    * @param jahr Erscheinungsjahr des Videos.
+    * 
+    * @throws IllegalArgumentException titel leer ist.
+    * @throws IllegalArgumentException spieldauer kleiner 1 ist.
+    * @throws IllegalArgumentException jahr kleiner als 1900 oder groesser als 2022.
+    */
     public Video(int artikelNr, int bestand, double preis, String titel, int spieldauer, int jahr){
         super(artikelNr, ARTIKELART, bestand, preis);
         
@@ -57,11 +71,21 @@ public class Video extends Artikel{
         return jahr;
     }
     
+    /**
+     * Gibt einen String mit Titel zurueck.
+     * 
+     * @return String mit Parameter.
+     */
     @Override
     public String getBeschreibung(){
         return titel;
     }
     
+    /**
+     * Vergleicht ob Objekte selben Titel, Spieldauer und Erscheinungsjahr haben.
+     * 
+     * @return true oder false je nachdem ob Objekte gleich sind.
+     */
     @Override
     public boolean equals(Object obj){
         if(this == obj){
@@ -82,6 +106,11 @@ public class Video extends Artikel{
         return false;
     }
     
+    /**
+     * Gibt einen String mit allen Video-spezifischen Attributen zurueck.
+     * 
+     * @return String mit Attributen.
+     */
     @Override
     public String toString(){
         return super.toString() + "; Titel: " + titel + "; Spieldauer: " + spieldauer + "; Erscheinungsjahr: " + jahr;

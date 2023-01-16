@@ -1,9 +1,9 @@
 
 /**
- * Beschreiben Sie hier die Klasse CD.
+ * CD Klasse die von Artikel erbt.
  * 
- * @author (Ihr Name) 
- * @version (eine Versionsnummer oder ein Datum)
+ * @author Tim Mueller / Yannick Gross
+ * @version 12.01.2023 / 20:00
  */
 public class CD extends Artikel{
     //Attribute
@@ -19,6 +19,20 @@ public class CD extends Artikel{
     //Konstanten
     private static final String ARTIKELART = "Medien";
     
+    /**
+    * Konstruktor fuer die Klasse CD mit allen Attributen.
+    * 
+    * @param artikelNr Artikelnummer der CD.
+    * @param bestand Aktueller Bestand / Anzahl der CD.
+    * @param preis Preis der CD
+    * @param interpret Interpret der CD
+    * @param titel Titel der CD
+    * @param anzahlTitel Anzahl der Titel auf der CD
+    * 
+    * @throws IllegalArgumentException interpret leer ist.
+    * @throws IllegalArgumentException titel leer ist.
+    * @throws IllegalArgumentException anzahlTitel kleiner 1 ist.
+    */
     public CD(int artikelNr, int bestand, double preis, String interpret, String titel, int anzahlTitel){
         super(artikelNr, ARTIKELART, bestand, preis);
         
@@ -58,11 +72,21 @@ public class CD extends Artikel{
         return anzahlTitel;
     }
     
+    /**
+     * Gibt einen String mit Interpret und Titel zurueck.
+     * 
+     * @return String mit Parametern.
+     */
     @Override
     public String getBeschreibung(){
         return interpret + " : " + titel;
     }
     
+    /**
+     * Vergleicht ob Objekte selben Titel, Interpret und Titelanzahl haben.
+     * 
+     * @return true oder false je nachdem ob Objekte gleich sind.
+     */
     @Override
     public boolean equals(Object obj){
         if(this == obj){
@@ -74,13 +98,19 @@ public class CD extends Artikel{
         if(obj instanceof CD){
             CD newObj = (CD)obj;
             if( newObj.getTitel().equals(getTitel()) &&
-                newObj.getInterpret().equals(getInterpret())){
+                newObj.getInterpret().equals(getInterpret()) &&
+                newObj.getAnzahlTitel() == getAnzahlTitel()){
                     return true;
                 }
         }
         return false;
     }
     
+    /**
+     * Gibt einen String mit allen CD-spezifischen Attributen zurueck.
+     * 
+     * @return String mit Attributen.
+     */
     @Override
     public String toString(){
         return super.toString() + "; Interpret: " + interpret + "; Titel: " + titel + "; Anzahl Titel: " + anzahlTitel;

@@ -1,5 +1,7 @@
  
 /**
+ * Klasse Artikel, die es erlaubt einen Artikel mit einer
+ * Artikelnummer, Artikelart, Bestand und Preis zu erstellen.
  * 
  * @author Tim Mueller / Yannick Gross
  * @version 03.12.2022 / 21:10
@@ -34,7 +36,7 @@ public class Artikel{
     * @throws IllegalArgumentException Wenn bestand kleiner als 0 ist.
     */
    public Artikel(int artikelNr, String art, int bestand, double preis) {
-       if(artikelNr > ARTIKELNR_OBERGRENZE || artikelNr <= ARTIKELNR_UNTERGRENZE || artikelNr < 0){
+       if(artikelNr > ARTIKELNR_OBERGRENZE || artikelNr <= ARTIKELNR_UNTERGRENZE){
            throw new IllegalArgumentException(ERROR_ARTIKELNUMMER_VIERSTELLIG);
         }
        

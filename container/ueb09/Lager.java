@@ -2,7 +2,7 @@
  * Klasse zum Lagern und Verwalten von Artikel Objekten.
  * 
  * @author Tim Mueller / Yannick Gross
- * @version 03.12.2022 / 21:10
+ * @version 12.01.2023 / 20:00
  */
 
 public class Lager{
@@ -12,9 +12,11 @@ public class Lager{
     private static final String ERROR_LAGER_VOLL =             "#ERR# Artikel konnte nicht angelegt werden, weil das Lager voll ist.\n";
     private static final String ERROR_ARTIKEL_NICHT_GEFUNDEN = "#ERR# Der gewuenschte Artikel wurde nicht im Lager gefunden.\n";
     private static final String ERROR_INDEX_FALSCH =           "#ERR# Der angegebene Index ist falsch. Er muss liegen, zwischen 0 und ";
-    private static final String ERROR_ARTIKEL_EXISTIERT =      "#ERR# Die eingegebene Artikelnummer existiert bereits.\n";
+    private static final String ERROR_ARTIKEL_EXISTIERT =      "#ERR# Der eingegebene Artikel existiert bereits.\n";
+    
     //Konstanten
     private static final int MAX_LAGER = 10;
+    
     //Attribute
     private Artikel[] lagerFeld;
     private final int lagerGroesse;
@@ -60,7 +62,7 @@ public class Lager{
         if(lagerBestand == lagerGroesse){
             throw new IllegalArgumentException(ERROR_LAGER_VOLL);
         }
-        if(istArtikelGelagert(artikel.getArtikelNr()) == true){
+        if(istArtikelGelagert(artikel) == true){
             throw new IllegalArgumentException(ERROR_ARTIKEL_EXISTIERT);
         }
         
@@ -225,9 +227,12 @@ public class Lager{
      * 
      * @return true wenn Artikel gefunden, false wenn Artikel nicht gefunden.
      */
-    public boolean istArtikelGelagert(int artikelNr){
+    private boolean istArtikelGelagert(Artikel artikel){
         for(int i = 0; i < lagerBestand; i++){
-            if(lagerFeld[i].getArtikelNr() == artikelNr){
+            if(lagerFeld[i].getArtikelNr() == artikel.getArtikelNr()){
+                return true;
+            }
+            if(lagerFeld[i].equals(artikel)){
                 return true;
             }
         }

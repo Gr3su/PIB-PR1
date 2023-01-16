@@ -1,9 +1,10 @@
 import java.util.Scanner;
 
 /**
+ * Konsolendialog fuer Lager Klasse.
  * 
  * @author Tim Mueller / Yannick Gross
- * @version 03.12.2022 / 21:10
+ * @version 12.01.2023 / 20:00
  */
 
 public class LagerDialog{

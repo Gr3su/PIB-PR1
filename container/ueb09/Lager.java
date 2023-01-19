@@ -6,14 +6,6 @@
  */
 
 public class Lager{
-    //Fehlermeldungen
-    private static final String ERROR_LAGERGROESSE_MEHR =      "#ERR# Die Groesse des Lagers muss mindestens 1 betragen.\n";
-    private static final String ERROR_KEIN_OBJEKT =            "#ERR# Es wurde kein gueltiges Objekt angegeben.\n";
-    private static final String ERROR_LAGER_VOLL =             "#ERR# Artikel konnte nicht angelegt werden, weil das Lager voll ist.\n";
-    private static final String ERROR_ARTIKEL_NICHT_GEFUNDEN = "#ERR# Der gewuenschte Artikel wurde nicht im Lager gefunden.\n";
-    private static final String ERROR_INDEX_FALSCH =           "#ERR# Der angegebene Index ist falsch. Er muss liegen, zwischen 0 und ";
-    private static final String ERROR_ARTIKEL_EXISTIERT =      "#ERR# Der eingegebene Artikel existiert bereits.\n";
-    
     //Konstanten
     private static final int MAX_LAGER = 10;
     
@@ -30,9 +22,8 @@ public class Lager{
      * @param lagerGroesse Der Wert fuer die laenge des Arrays und fue <code>lagerGroesse</code>
      */
     public Lager(int lagerGroesse){
-        if(lagerGroesse < 1){
-            throw new IllegalArgumentException(ERROR_LAGERGROESSE_MEHR);
-        }
+        FehlerPruefung.fehlerPruefung(  ErrorMessages.ERROR_LAGER_LAGERGROESSE_MUSS_GROESSER,
+                                        lagerGroesse);
         
         this.lagerFeld = new Artikel[lagerGroesse];
         this.lagerGroesse = lagerGroesse;
@@ -56,15 +47,12 @@ public class Lager{
      * @throws IllegalArgumentException Wenn Artikelnummer bereits vergeben ist.
      */
     public void legeAnArtikel(Artikel artikel){
-        if(artikel == null){
-            throw new IllegalArgumentException(ERROR_KEIN_OBJEKT);
-        }
-        if(lagerBestand == lagerGroesse){
-            throw new IllegalArgumentException(ERROR_LAGER_VOLL);
-        }
-        if(istArtikelGelagert(artikel) == true){
-            throw new IllegalArgumentException(ERROR_ARTIKEL_EXISTIERT);
-        }
+        FehlerPruefung.fehlerPruefung(  ErrorMessages.ERROR_LAGER_KEIN_OBJEKT,
+                                        artikel);
+        FehlerPruefung.fehlerPruefung(  ErrorMessages.ERROR_LAGER_LAGER_VOLL,
+                                        lagerBestand, lagerGroesse);
+        FehlerPruefung.fehlerPruefung(  ErrorMessages.ERROR_LAGER_ARTIKEL_EXISTIERT,
+                                        istArtikelGelagert(artikel));
         
         lagerFeld[lagerBestand] = artikel;
         lagerBestand++;
@@ -193,7 +181,7 @@ public class Lager{
      */
     public Artikel getArtikel(int index){
         if(index < 0 || index > lagerGroesse - 1){
-            throw new IllegalArgumentException(ERROR_INDEX_FALSCH + String.valueOf(lagerGroesse - 1));
+            throw new IllegalArgumentException(ErrorMessages.ERROR_LAGER_INDEX_FALSCH + String.valueOf(lagerGroesse - 1));
         }
         
         return lagerFeld[index];
@@ -259,6 +247,6 @@ public class Lager{
             }
         }
         
-        throw new IllegalArgumentException(ERROR_ARTIKEL_NICHT_GEFUNDEN);
+        throw new IllegalArgumentException(ErrorMessages.ERROR_LAGER_ARTIKEL_NICHT_GEFUNDEN.getMessage());
     }
 }

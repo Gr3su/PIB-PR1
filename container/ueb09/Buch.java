@@ -10,12 +10,7 @@ public class Buch extends Artikel{
     private String titel;
     private String autor;
     private String verlag;
-    
-    //Error-Messages
-    private static final String ERROR_TITEL_LEER    = "#ERR# Der Titel muss mindestens aus einem Zeichen bestehen.\n";
-    private static final String ERROR_AUTOR_LEER    = "#ERR# Der Autor muss mindestens aus einem Zeichen bestehen.\n";
-    private static final String ERROR_VERLAG_LEER   = "#ERR# Der Verlag muss mindestens aus einem Zeichen bestehen.\n";
-    
+
     //Konstanten
     private static final String ARTIKELART = "Medien";
     
@@ -36,15 +31,12 @@ public class Buch extends Artikel{
     public Buch(int artikelNr, int bestand, double preis, String titel, String autor, String verlag){
         super(artikelNr, ARTIKELART, bestand, preis);
         
-        if(titel == null || titel.isBlank()){
-            throw new IllegalArgumentException(ERROR_TITEL_LEER);
-        }
-        if(autor == null || autor.isBlank()){
-            throw new IllegalArgumentException(ERROR_AUTOR_LEER);
-        }
-        if(verlag == null || verlag.isBlank()){
-            throw new IllegalArgumentException(ERROR_VERLAG_LEER);
-        }
+        FehlerPruefung.fehlerPruefung(  ErrorMessages.ERROR_BUCH_AUTOR_LEER,
+                                        autor);
+        FehlerPruefung.fehlerPruefung(  ErrorMessages.ERROR_BUCH_TITEL_LEER,
+                                        titel);
+        FehlerPruefung.fehlerPruefung(  ErrorMessages.ERROR_BUCH_VERLAG_LEER,
+                                        verlag);
         
         this.titel = titel.strip();
         this.autor = autor.strip();
@@ -67,7 +59,7 @@ public class Buch extends Artikel{
         return autor;
     }
     
-    public String getVelrag(){
+    public String getVerlag(){
         return verlag;
     }
     
@@ -88,6 +80,8 @@ public class Buch extends Artikel{
      */
     @Override
     public boolean equals(Object obj){
+        super.equals(obj);
+        
         if(this == obj){
             return true;
         }

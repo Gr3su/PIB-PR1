@@ -8,16 +8,7 @@
  */
 
 public class Artikel{
-   //Fehlermeldungen
-   private static final String ERROR_ARTIKELNUMMER_VIERSTELLIG =    "#ERR# Die Artikelnummer muss vierstellig und positiv sein\n";
-   private static final String ERROR_ARTIKELART_ZEICHENKETTE =      "#ERR# Die Artikelart muss eine Zeichenkette sein\n";
-   private static final String ERROR_BESTAND_POSITIV =              "#ERR# Der Bestand muss positiv sein\n";
-   private static final String ERROR_BUCHUNG_POSITIV =              "#ERR# Die Buchungsmenge muss positiv sein\n";
-   private static final String ERROR_PREIS_POSITIV =                "#ERR# Der Preis muss positiv sein\n";
-   private static final String ERROR_ZU_VIEL_ABGEZOGEN =            "#ERR# Der Preis kann maximal um 100% reduziert werden\n";
-   private static final int ARTIKELNR_OBERGRENZE =                  9999;
-   private static final int ARTIKELNR_UNTERGRENZE =                 999;
-   
+    
    //Attribute fuer die Klasse Artikel
    private String art;
    private int artikelNr;
@@ -36,13 +27,10 @@ public class Artikel{
     * @throws IllegalArgumentException Wenn bestand kleiner als 0 ist.
     */
    public Artikel(int artikelNr, String art, int bestand, double preis) {
-       if(artikelNr > ARTIKELNR_OBERGRENZE || artikelNr <= ARTIKELNR_UNTERGRENZE){
-           throw new IllegalArgumentException(ERROR_ARTIKELNUMMER_VIERSTELLIG);
-        }
-       
-       if(art.isBlank() || art == null){
-           throw new IllegalArgumentException(ERROR_ARTIKELART_ZEICHENKETTE);
-       }
+       FehlerPruefung.fehlerPruefung(   ErrorMessages.ERROR_ARTIKEL_ARTIKELNUMMER_VIERSTELLIG,
+                                        artikelNr);
+       FehlerPruefung.fehlerPruefung(   ErrorMessages.ERROR_ARTIKEL_ARTIKELART_ZEICHENKETTE,
+                                        art);
        
        this.artikelNr = artikelNr;
        setArt(art.strip());
@@ -85,9 +73,8 @@ public class Artikel{
     * @throws IllegalArgumentException Wenn Buchung eine negative Zahl ist.
     */
    public void bucheZugang(int menge){
-       if(menge < 0){
-           throw new IllegalArgumentException(ERROR_BUCHUNG_POSITIV);
-       }   
+       FehlerPruefung.fehlerPruefung(   ErrorMessages.ERROR_ARTIKEL_BUCHUNG_POSITIV,
+                                        menge); 
        bestand += menge; 
    }
 
@@ -100,20 +87,16 @@ public class Artikel{
     * @throws IllegalArgumentException Wenn bestand unter 0 fallen sollte.
     */
    public void bucheAbgang(int menge){
-       if(menge < 0){
-           throw new IllegalArgumentException(ERROR_BUCHUNG_POSITIV);
-       }
-       
-       if(bestand - menge < 0){
-           throw new IllegalArgumentException(ERROR_BESTAND_POSITIV); 
-       }
+       FehlerPruefung.fehlerPruefung(   ErrorMessages.ERROR_ARTIKEL_BUCHUNG_POSITIV,
+                                        menge); 
+       FehlerPruefung.fehlerPruefung(   ErrorMessages.ERROR_ARTIKEL_BESTAND_POSITIV,
+                                        bestand - menge); 
        bestand -= menge;
    }
    
    public void aenderePreis(double prozent){
-       if(prozent < -100.0){
-           throw new IllegalArgumentException(ERROR_ZU_VIEL_ABGEZOGEN);
-       }
+       FehlerPruefung.fehlerPruefung(   ErrorMessages.ERROR_ARTIKEL_PROZENT_UNTER_MINUS_100,
+                                        prozent); 
        
        this.preis *= (1.0 + prozent / 100);
    }
@@ -145,15 +128,14 @@ public class Artikel{
        return bestand;
    }
    
+   public double getPreis(){
+       return preis;
+   }
+   
    /**
     * Gibt den Preis des Artikels zurueck.
     * 
     * @return Preis des Artikels.
-    */
-   public double getPreis(){
-       return preis;
-   }
-
    /**
     * Ueberschreibt den Bestand des Artikels mit dem uebergebenen Wert.
     * 
@@ -162,9 +144,9 @@ public class Artikel{
     * @throws IllegalArgumentException Wenn bestand kleiner als 0 gesetzt wird.
     */
    public void setBestand(int bestand){
-       if(bestand < 0){
-           throw new IllegalArgumentException(ERROR_BESTAND_POSITIV);
-       }
+       FehlerPruefung.fehlerPruefung(   ErrorMessages.ERROR_ARTIKEL_BESTAND_POSITIV,
+                                        bestand);
+       
        this.bestand = bestand;
    }
    
@@ -176,10 +158,8 @@ public class Artikel{
     * @throws IllegalArgumentException Wenn art keine Zeichenkette.
     */
    public void setArt(String art){
-       if(art.trim().isEmpty() == true || art == null){
-           throw new IllegalArgumentException(ERROR_ARTIKELART_ZEICHENKETTE); 
-       }
-       
+       FehlerPruefung.fehlerPruefung(   ErrorMessages.ERROR_ARTIKEL_ARTIKELART_ZEICHENKETTE,
+                                        art);
        this.art = art;     
    }
    
@@ -191,9 +171,8 @@ public class Artikel{
     * @throws IllegalArgumentException Wenn Preis negativ ist.
     */
    public void setPreis(double preis){
-       if(preis < 0){
-           throw new IllegalArgumentException(ERROR_PREIS_POSITIV);
-       }
+       FehlerPruefung.fehlerPruefung(   ErrorMessages.ERROR_ARTIKEL_PREIS_POSITIV,
+                                        preis);
        this.preis = preis;
    }
    

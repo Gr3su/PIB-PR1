@@ -11,11 +11,6 @@ public class Video extends Artikel{
     private int     spieldauer;
     private int     jahr;
     
-    //Error-Messages
-    private static final String ERROR_TITEL_LEER                        = "#ERR# Der Titel muss mindestens ein Zeichen enthalten.\n";
-    private static final String ERROR_SPIELDAUER_KLEINER_EINS           = "#ERR# Die Spieldauer muss groesser 0 sein.\n";
-    private static final String ERROR_ERSCHEINUNGSJAHR_NICHT_MOEGLICH   = "#ERR# Das Erscheinungsjahr muss zwischen 1899 und 2023 liegen.\n";
-    
     //Konstanten
     private static final String ARTIKELART = "Medien";
     
@@ -36,15 +31,12 @@ public class Video extends Artikel{
     public Video(int artikelNr, int bestand, double preis, String titel, int spieldauer, int jahr){
         super(artikelNr, ARTIKELART, bestand, preis);
         
-        if(titel == null || titel.isBlank()){
-            throw new IllegalArgumentException(ERROR_TITEL_LEER);
-        }
-        if(spieldauer < 1){
-            throw new IllegalArgumentException(ERROR_SPIELDAUER_KLEINER_EINS);
-        }
-        if(jahr < 1900 || jahr > 2022){
-            throw new IllegalArgumentException(ERROR_ERSCHEINUNGSJAHR_NICHT_MOEGLICH);
-        }
+        FehlerPruefung.fehlerPruefung(  ErrorMessages.ERROR_VIDEO_TITEL_LEER,
+                                        titel);
+        FehlerPruefung.fehlerPruefung(  ErrorMessages.ERROR_VIDEO_SPIELDAUER_KLEINER_EINS,
+                                        spieldauer);
+        FehlerPruefung.fehlerPruefung(  ErrorMessages.ERROR_VIDEO_ERSCHEINUNGSJAHR_NICHT_MOEGLICH,
+                                        jahr);
         
         this.titel = titel.strip();
         this.spieldauer = spieldauer;
@@ -88,6 +80,8 @@ public class Video extends Artikel{
      */
     @Override
     public boolean equals(Object obj){
+        super.equals(obj);
+        
         if(this == obj){
             return true;
         }

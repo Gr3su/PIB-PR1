@@ -11,11 +11,6 @@ public class CD extends Artikel{
     private String  titel;
     private int     anzahlTitel;
     
-    //Error-Messages
-    private static final String ERROR_INTERPRET_LEER             = "#ERR# Der Interpret muss mindestens ein Zeichen enthalten.\n";
-    private static final String ERROR_TITEL_LEER                 = "#ERR# Der Titel muss mindestens ein Zeichen enthalten.\n";
-    private static final String ERROR_ANZAHLTITEL_KLEINER_EINS   = "#ERR# Die Anzahl der Titel muss eine natürliche Zahl sein.\n";
-    
     //Konstanten
     private static final String ARTIKELART = "Medien";
     
@@ -36,15 +31,12 @@ public class CD extends Artikel{
     public CD(int artikelNr, int bestand, double preis, String interpret, String titel, int anzahlTitel){
         super(artikelNr, ARTIKELART, bestand, preis);
         
-        if(interpret == null || interpret.isBlank()){
-            throw new IllegalArgumentException(ERROR_INTERPRET_LEER);
-        }
-        if(titel == null || titel.isBlank()){
-            throw new IllegalArgumentException(ERROR_TITEL_LEER);
-        }
-        if(anzahlTitel < 1){
-            throw new IllegalArgumentException(ERROR_ANZAHLTITEL_KLEINER_EINS);
-        }
+        FehlerPruefung.fehlerPruefung(  ErrorMessages.ERROR_CD_TITEL_LEER,
+                                        titel);
+        FehlerPruefung.fehlerPruefung(  ErrorMessages.ERROR_CD_INTERPRET_LEER,
+                                        interpret);
+        FehlerPruefung.fehlerPruefung(  ErrorMessages.ERROR_CD_ANZAHLTITEL_KLEINER_EINS,
+                                        anzahlTitel);
         
         this.interpret = interpret.strip();
         this.titel = titel.strip();
@@ -89,6 +81,8 @@ public class CD extends Artikel{
      */
     @Override
     public boolean equals(Object obj){
+        super.equals(obj);
+        
         if(this == obj){
             return true;
         }

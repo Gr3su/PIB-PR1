@@ -12,13 +12,7 @@ public class LagerDialog{
     private static Scanner scanner      = new Scanner(System.in);
     private static Lager lager          = null;
     private static boolean killProgram  = false;
-    
-    //Error-Messages
-    private static final String ERROR_OPTION_NICHT_GEFUNDEN     = "#ERR# Option wurde nicht gefunden\n";
-    private static final String ERROR_OPTION_NUMMER             = "#ERR# Es koennen nur folgende Option-Nummern angenommen werden: 1-";
-    private static final String ERROR_INDEX_NICHT_BELEGT        = "#ERR# Gewuenschter Index ist nicht belegt.\n";
-    private static final String ERROR_FALSCHER_DATENTYP         = "#ERR# Falscher Datentyp wurde eingegeben.\n";
-    
+  
     private LagerDialog(){}
     
     /**
@@ -64,9 +58,9 @@ public class LagerDialog{
                                 "10 - Bestandsliste ausgeben\n" +
                                 "11 - Dialog beenden\n" +
                                 "Eingabe: ");
-        if(input < 1 || input > 11){
-            throw new IllegalArgumentException(ERROR_OPTION_NUMMER + "10\n");
-        }
+                                
+        FehlerPruefung.fehlerPruefung(  ErrorMessages.ERROR_LAGERDIALOG_OPTION_NUMMER_BIS_11,
+                                        input);
                                     
         if(lager == null && input > 1 && input < 11){
             System.out.println("Lager wurde noch nicht initialisiert. Objekt initialisierung wird gestartet.");
@@ -132,7 +126,7 @@ public class LagerDialog{
                 break;
                 
             default:
-                throw new IllegalArgumentException(ERROR_OPTION_NICHT_GEFUNDEN);
+                throw new IllegalArgumentException(ErrorMessages.ERROR_LAGERDIALOG_OPTION_NICHT_GEFUNDEN.getMessage());
         }
         
     }
@@ -147,10 +141,8 @@ public class LagerDialog{
     private final Lager erstelleLager(){
         byte konstruktorWahl = leseByte("Moechtest du eine Lagergroesse vorgeben? (Bei Nein: Groesse = 10) (1:Ja / 2:Nein)\nEingabe:");
         
-        if(konstruktorWahl < 1 || konstruktorWahl > 2){
-            throw new IllegalArgumentException(ERROR_OPTION_NUMMER + "2\n");
-        }
-        
+        FehlerPruefung.fehlerPruefung(  ErrorMessages.ERROR_LAGERDIALOG_OPTION_NUMMER_BIS_2,
+                                        konstruktorWahl);
         
         if(konstruktorWahl == 1){
             int lagerGroesse = leseInt("Die Lagergroesse: ");
@@ -174,9 +166,8 @@ public class LagerDialog{
                                         "3 - Video\n" +
                                         "4 - Allgemeiner Artikel\n");
         
-        if(artikelWahl < 1 || artikelWahl > 4){
-            throw new IllegalArgumentException(ERROR_OPTION_NUMMER + "4\n");
-        }
+        FehlerPruefung.fehlerPruefung(  ErrorMessages.ERROR_LAGERDIALOG_OPTION_NUMMER_BIS_4,
+                                        artikelWahl);                             
         
         if(artikelWahl == 1){
             return erstelleCD();
@@ -197,6 +188,9 @@ public class LagerDialog{
                                         "2 - ohne Bestand\n" +
                                         "3 - ohne Bestand und Preis");               
         
+        FehlerPruefung.fehlerPruefung(  ErrorMessages.ERROR_LAGERDIALOG_OPTION_NUMMER_BIS_3,
+                                        konstruktorWahl);  
+                                        
         int artikelNr = leseInt("Die Artikelnummer: ");
         String art = leseString("Die Artikelart: ");
         
@@ -321,7 +315,8 @@ public class LagerDialog{
         System.out.println(prompt);
         while(!scanner.hasNextByte()){
             scanner.next();
-            System.out.println(ERROR_FALSCHER_DATENTYP + prompt);
+            System.out.println( ErrorMessages.ERROR_LAGERDIALOG_FALSCHER_DATENTYP.getMessage()
+                                + prompt);
         }
         byte tmp = scanner.nextByte();
         scanner.nextLine();
@@ -342,7 +337,8 @@ public class LagerDialog{
         System.out.println(prompt);
         while(!scanner.hasNextInt()){
             scanner.next();
-            System.out.println(ERROR_FALSCHER_DATENTYP + prompt);
+            System.out.println( ErrorMessages.ERROR_LAGERDIALOG_FALSCHER_DATENTYP.getMessage()
+                                + prompt);
         }
         int tmp = scanner.nextInt();
         scanner.nextLine();
@@ -363,7 +359,8 @@ public class LagerDialog{
         System.out.println(prompt);
         while(!scanner.hasNextDouble()){
             scanner.next();
-            System.out.println(ERROR_FALSCHER_DATENTYP + prompt);
+            System.out.println( ErrorMessages.ERROR_LAGERDIALOG_FALSCHER_DATENTYP.getMessage()
+                                + prompt);
         }
         double tmp = scanner.nextDouble();
         scanner.nextLine();

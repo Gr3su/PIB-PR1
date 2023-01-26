@@ -10,14 +10,23 @@ public final class Person{
     private String vorname;
     private String nachname;
     
-    private Person(){};
+    // private Person(){};
     
+    /**
+     * Erstellt eine Person mit Vor- und Nachnamen.
+     * 
+     * @param vorname Vorname der Person.
+     * @param nachname Nachname der Person.
+     */
     public Person(String vorname, String nachname){
         if(vorname == null || vorname.isBlank()){
             throw new IllegalArgumentException(ErrorMessages.PERSON_VORNAME_LEER.getMessage());
         }
         if(nachname == null || nachname.isBlank()){
             throw new IllegalArgumentException(ErrorMessages.PERSON_NACHNAME_LEER.getMessage());
+        }
+        if(!vorname.matches("[a-zA-Z]+") || !nachname.matches("[a-zA-Z]+")){
+            throw new IllegalArgumentException(ErrorMessages.NAMEN_KEINE_SONDERZEICHEN.getMessage());
         }
         this.vorname = vorname.strip();
         this.nachname = nachname.strip();

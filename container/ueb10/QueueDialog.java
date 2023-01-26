@@ -12,7 +12,8 @@ public final class QueueDialog{
                                                                     "2 - Objekt erstellen\n" +
                                                                     "3 - Erstes Objekt aus Queue entfernen\n" +
                                                                     "4 - Gewuenschte Queue ausgeben\n" +
-                                                                    "5 - Dialog beenden\n";
+                                                                    "5 - Size / Full / Empty - Test\n" +
+                                                                    "6 - Dialog beenden\n";
                                                                     
     private static final    String      QUEUE_ERSTELLEN_AUSWAHL =   "Bitte waehlen Sie eine Warteschlangen-Art:\n" +
                                                                     "1 - Personen Queue\n" +
@@ -28,7 +29,15 @@ public final class QueueDialog{
     private static final    String      AUSWAHL_QUEUE           =   "Folgende Warteschlangen koennen ausgewaehlt werden:\n";
     private static final    String      EINGABE_STRING          =   "Der gewuenschte String:\n";
     private static final    String      EINGABE_QUEUE_GROESSE   =   "Die gewuenschte Groesse der Queue:\n";
+    private static final    String      KEINE_QUEUE_ERSTELLT    =   "Es wurde noch keine Queue erstellt, Initialisierung wird erzwungen.\n";
+    private static final    String      QUEUES_UEBERSCHREIBEN   =   "Wollen Sie die Warteschlangen von 0 an ueberschreiben? (1: Ja / 2: Nein)\n";
+    private static final    String      NICHT_UEBERSCHREIBEN    =   "Queues werden nicht uberschrieben.\n";
     
+    //Konstanten
+    private static final    byte        MIN_OPTIONEN            =   1;
+    private static final    byte        MAX_OPTIONEN            =   6;
+    
+    //Allgemeingueltige Variablen
     private static          Scanner     scanner;
     private static          boolean     killProgramm;
     private static          Queue []    warteschlangen;
@@ -36,6 +45,9 @@ public final class QueueDialog{
     
     private QueueDialog(){}
     
+    /**
+     * Start Methode die den Dialog am laufen haelt und Fehler abfaengt.
+     */
     private static void start(){
         killProgramm    = false;
         warteschlangen  = new Queue[5];
@@ -55,11 +67,23 @@ public final class QueueDialog{
         }
     }
     
+    /**
+     * Funktion zum Einlesen der gewuenschten Option, Abarbeitung welche Option
+     * gewuenscht ist und aufrufen der passenden Methoden.
+     * 
+     * @throws IllegalArgumentException Wenn Menue-Option ausserhalb des Wertebereichs gewaehlt wird.
+     * @throws IllegalArgumentException Wenn Switch-Case keinen Case findet, unerwarteter Fehler.
+     */
     private static void menueAuswahl(){
         byte option = leseByte(MENUE_AUSWAHL);
+        byte auswahl;
         
-        if(option > 5 || option < 1){
-            throw new IllegalArgumentException(ErrorMessages.MENUE_AUSWAHL_BIS5.getMessage());
+        if(option > MAX_OPTIONEN || option < MIN_OPTIONEN){
+            throw new IllegalArgumentException(ErrorMessages.MENUE_AUSWAHL_BIS6.getMessage());
+        }
+        if(warteschlangen[0] == null && option != MIN_OPTIONEN && option != MAX_OPTIONEN){
+            System.out.println(KEINE_QUEUE_ERSTELLT);
+            option = 1;
         }
         
         switch(option){
@@ -76,33 +100,53 @@ public final class QueueDialog{
                 break;
             
             case 4:
-                byte auswahl = auswahlQueue();
+                auswahl = auswahlQueue();
                 print(warteschlangen[auswahl]);
                 break;
                 
             case 5:
+                auswahl = auswahlQueue();
+                System.out.println("Groesse: " + warteschlangen[auswahl].size());
+                System.out.println("Full: " + warteschlangen[auswahl].full());
+                System.out.println("Empty: " + warteschlangen[auswahl].empty() + "\n");
+                break;
+                
+            case 6:
                 killProgramm = true;
                 break;
                 
             default:
-                throw new IllegalStateException();
+                throw new IllegalArgumentException(ErrorMessages.UNMOEGLICH_ZU_ERREICHEN.getMessage());
         }
     }
     
+    /**
+     * Erstellt eine Warteschlange des gewuenschten Typs und speichert
+     * sie in einem Array. Ist das Array voll, wird angeboten es von vorne zu ueberschreiben.
+     * 
+     * @throws IllegalArgumentException Wenn Option ausserhalb des Wertebereichs ausgewaehlt wird.
+     */
     private static void erstelleQueue(){
         if(queueGroesse == warteschlangen.length){
-            throw new IllegalArgumentException(ErrorMessages.MAX_QUEUES_ERREICHT.getMessage());
+            System.err.println(ErrorMessages.MAX_QUEUES_ERREICHT.getMessage());
+            byte auswahl = leseByte(QUEUES_UEBERSCHREIBEN);
+            
+            if(auswahl != 1){
+                System.out.println(NICHT_UEBERSCHREIBEN);
+                return;
+            }
+            queueGroesse = 0;
         }
         
         byte option = leseByte(QUEUE_ERSTELLEN_AUSWAHL);
         
-        if(option > 2 || option < 1){
+        if(option > 2 || option < MIN_OPTIONEN){
             throw new IllegalArgumentException(ErrorMessages.MENUE_AUSWAHL_BIS2.getMessage());
         }
         
         int groesse = leseInt(EINGABE_QUEUE_GROESSE);
         
-        if(option == 1){
+        if(option == MIN_OPTIONEN){
             warteschlangen[queueGroesse] = new PersonQueue(groesse);
             queueGroesse++;
         }
@@ -112,20 +156,27 @@ public final class QueueDialog{
         }
     }
     
+    /**
+     * Fuegt an ein Warteschlangen Ende ein Element des passenden Typs ein.
+     * 
+     * @throws IllegalArgumentException Wenn Option ausserhalb des Wertebereichs ausgewaehlt wird.
+     * @throws IllegalArgumentException Wenn ausgewaehlte Warteschlange voll ist.
+     */
     private static void fuegeEintragEin(){
         byte option = leseByte(QUEUE_EINTRAG_AUSWAHL);
         byte auswahl = -1;
         Object obj = null;
         
-        if(option > 2 || option < 1){
+        if(option > 2 || option < MIN_OPTIONEN){
             throw new IllegalArgumentException(ErrorMessages.MENUE_AUSWAHL_BIS2.getMessage());
         }
         
-        if(option == 1){
+        if(option == MIN_OPTIONEN){
             String vorname = leseString(EINGABE_VORNAME);
             String nachname = leseString(EINGABE_NACHNAME);
                 
             obj = new Person(vorname, nachname);
+            // obj = new Person();
             auswahl = auswahlQueue();
         }
         else{
@@ -133,21 +184,36 @@ public final class QueueDialog{
             auswahl = auswahlQueue();
         }
         
+        if(warteschlangen[auswahl].full()){
+            throw new IllegalArgumentException(ErrorMessages.QUEUE_VOLL.getMessage());
+        }
+        
         warteschlangen[auswahl].addLast(obj);
     }
     
+    /**
+     * Laesst den User die Position einer Queue auswaehlen.
+     * 
+     * @return Position der gewuenschten Warteschlange.
+     * 
+     * @throws IllegalArgumentException Wenn Auswahl ausserhalb des Bereichs von 0 und der Anzahl
+     * der gespeicherten Queues - 1 ist.
+     */
     private static byte auswahlQueue(){
         byte option = leseByte(AUSWAHL_QUEUE + ausgabeQueueArray());
         if(option < 0 || option > queueGroesse){
             throw new IllegalArgumentException(ErrorMessages.AUSWAHL_AUSSERHALB_WERTEBREICH.getMessage());
         }
-        if(warteschlangen[option].full()){
-            throw new IllegalArgumentException(ErrorMessages.QUEUE_VOLL.getMessage());
-        }
         
         return option;
     }
     
+    /**
+     * Gibt die gespeicherten Queues stueckweise aus.
+     * Enthaelt pro Element: Implementierungsname | Fuellstand / Kapazitaet
+     * 
+     * @return Inhalt des warteschlangen-Arrays.
+     */
     private static String ausgabeQueueArray(){
         StringBuilder ausgabe = new StringBuilder("");
         
@@ -161,6 +227,11 @@ public final class QueueDialog{
         return ausgabe.toString();
     }
     
+    /**
+     * Gibt das erste Element der ausgewaehlten Queue zurueck und loescht es.
+     * 
+     * @return Geloeschtes Element.
+     */
     private static void loescheEintrag(){
         byte auswahl = auswahlQueue();
         
@@ -168,6 +239,12 @@ public final class QueueDialog{
         System.out.println("Geloeschter Inhalt: " + obj);
     }
     
+    /**
+     * Print Methode fuer einzelne Queues.
+     * Gibt einzeln die Elemente einer uebergebenen Queue aus.
+     * 
+     * @param q Queue die ausgegeben werden soll.
+     */
     private static void print(Queue q){
         StringBuilder ausgabe = new StringBuilder("Warteschlangen Inhalt:\n");
         

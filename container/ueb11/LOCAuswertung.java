@@ -4,7 +4,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 
 /**
- * Beschreiben Sie hier die Klasse LOCAuswertung.
+ * Zaehlt die Anzahl der LOC (Lines of Code) der uebergebenen Pfade von Dateien.
  * 
  * @author Tim Mueller / Yannick Gross
  * @version 26.01.2023 / 
@@ -12,6 +12,15 @@ import java.io.IOException;
 
 public final class LOCAuswertung{
     
+    /**
+     * Hauptmethode:
+     * geht die einzelnen uebergebenen Pfade durch,
+     * erstellt die Ausgabe mit den LOC der einzelnen Dateien,
+     * bei Fehlerhaften Pfaden wird eine ErrorMessage gedruckt,
+     * Fehler werden abgefangen.
+     * 
+     * @param args String Array mit den Pfaden der zu pruefenden Dateien.
+     */
     private static void start(String [] args){
         File file = null;
         int linesOfCode = 0;
@@ -55,9 +64,27 @@ public final class LOCAuswertung{
         System.out.println(ausgabe.toString());
     }
     
+    /**
+     * Ueberprueft ob der Pfad zu einer Datei:
+     *  - ob wirklich eine Datei ist
+     *  - auf .java endet
+     *  - ob diese Datei wirklich existiert
+     *  - ob Datei lesbar ist
+     *  
+     * @param path Pfad zu einer Datei, ausgehend vom Pfad wo das Programm gestartet wird.
+     * 
+     * @throws InvalidFileException Wenn Pfad nicht zu einer Datei fuehrt.
+     * @throws InvalidFileException Wenn Datei keine Java Datei.
+     * @throws InvalidFileException Wenn Datei nicht existiert.
+     * @throws FileNotReadableException Wenn Datei nicht lesbar ist.
+     */
     private static File fileInitAndValidation(String path){
         File file = new File(path);
         
+        if(!file.isFile()){
+            throw new InvalidFileException( String.format(ErrorMessages.PFAD_KEINE_DATEI.getMessage(),
+                                            path));
+        }
         if( !path.endsWith(".java")){
             throw new InvalidFileException( String.format(ErrorMessages.KEINE_JAVA_DATEI.getMessage(),
                                             path));  
@@ -70,14 +97,18 @@ public final class LOCAuswertung{
             throw new FileNotReadableException( String.format(ErrorMessages.DATEI_NICHT_LESBAR.getMessage(),
                                                 path));
         }
-        if(!file.isFile()){
-            throw new InvalidFileException( String.format(ErrorMessages.PFAD_KEINE_DATEI.getMessage(),
-                                            path));
-        }
         
         return file;
     }
     
+    /**
+     * Zaehlt die Zeilen von Code die nicht leer sind und nicht mit einem
+     * Ein-Zeilen-Kommentar beginnen.
+     * 
+     * @param file Datei die eingelesen werden soll.
+     * 
+     * @throws IOException Wenn bei BufferedReader ein Fehler auftritt.
+     */
     private static int countLOC(File file) throws IOException{
         int linesOfCode = 0;
         String line = null;

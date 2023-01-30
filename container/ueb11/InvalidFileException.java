@@ -1,5 +1,7 @@
 
 /**
+ * InvalidFileException wird geworfen wenn Datei nicht fuer
+ * Programm geeignet ist oder keine Datei ist.
  *
  * @author Tim Mueller / Yannick Gross 
  * @version 26.01.2023 / 13:50Uhr

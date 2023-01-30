@@ -1,9 +1,9 @@
 
 /**
- * Beschreiben Sie hier die Aufzählungsklasse ErrorMessages.
+ * Fehlermeldungen fuer alle Klassen.
  * 
- * @author  (Ihr Name)
- * @version (eine Versionsnummer oder ein Datum)
+ * @author  Tim Mueller / Yannick Gross
+ * @version 27.01.2023 / 11:00Uhr
  */
 public enum ErrorMessages{
     KEINE_JAVA_DATEI("#ERR#\n%1$s\nUebergebene Datei keine Java Datei.\n#ERR#"),

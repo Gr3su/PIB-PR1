@@ -1,9 +1,9 @@
 
 /**
- * Beschreiben Sie hier die Klasse FileNotReadableException.
+ * FileNotReadableException Datei nicht gelesen werden kann.
  * 
- * @author (Ihr Name) 
- * @version (eine Versionsnummer oder ein Datum)
+ * @author Tim Mueller / Yannick Gross 
+ * @version 27.01.2023 / 11:00Uhr
  */
 public class FileNotReadableException extends RuntimeException{
     
